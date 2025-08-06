@@ -5,11 +5,13 @@ import { csvFileProcessor } from '../services/csvFileProcessor'
 export const MovieContext = createContext();
 
 export const MovieProvider = ({ children }) => {
-    const [moviesData, setMoviesData] = useState({
+    const [data, setData] = useState({
         movies: [],
         actors: [],
         roles: [],
     })
+
+    const [moviesData, setMoviesData] = useState({});
 
     useEffect(() => {
         const getCsvData = async () => {
@@ -20,7 +22,7 @@ export const MovieProvider = ({ children }) => {
                     csvFileProcessor.getRoles(),
                 ]);
 
-                setMoviesData({
+                setData({
                     movies,
                     actors,
                     roles
@@ -34,10 +36,10 @@ export const MovieProvider = ({ children }) => {
 
     }, []);
 
-    console.log(moviesData)
+    console.log(data)
 
     const values = {
-        moviesData
+        data
     }
 
     return (
