@@ -44,3 +44,9 @@ textarea,
 select {
 	font: inherit;
 }
+
+body {
+	font-family: "Roboto", sans-serif;
+	background-color: #242424;
+}
+
