@@ -1,0 +1,41 @@
+.active {
+    border-bottom: 2px solid #fff;
+}
+
+nav {
+    max-width: 1600px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+}
+
+.logoContainer span {
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.logoContainer span:first-child {
+    color: var(--primary-color);
+}
+
+.logoContainer span:last-child {
+    margin-left: 5px;
+    color: #c70000;
+}
+
+.navItemsContainer {
+    display: flex;
+    gap: 40px;
+}
+
+.navItemsContainer a  {
+    color: var(--primary-color);
+    font-size: 17px;
+    padding: 5px 0px;
+}
+
+.navItemsContainer a:hover {
+    opacity: 0.7;
+}
