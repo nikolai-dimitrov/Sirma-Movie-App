@@ -23,7 +23,7 @@ const parseCsv = async (filePath) => {
 
 		parsedData.push(rowData);
 	});
-    console.log(parsedData)
+	
 	return parsedData;
 };
 
