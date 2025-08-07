@@ -11,7 +11,7 @@ export const MovieProvider = ({ children }) => {
         roles: [],
     })
 
-    const [moviesData, setMoviesData] = useState({});
+    const [moviesMappedWithRoles, setMoviesMappedWithRoles] = useState({});
 
     useEffect(() => {
         const getCsvData = async () => {
@@ -22,24 +22,36 @@ export const MovieProvider = ({ children }) => {
                     csvFileProcessor.getRoles(),
                 ]);
 
+                const moviesAndRoles = {};
+
+                roles.forEach((currentRole) => {
+                    if (!moviesAndRoles[currentRole.MovieID]) {
+                        moviesAndRoles[currentRole.MovieID] = [];
+                    }
+
+                    moviesAndRoles[currentRole.MovieID].push(currentRole);
+                });
+
                 setData({
                     movies,
                     actors,
                     roles
                 })
 
+                setMoviesMappedWithRoles(moviesAndRoles);
+
             } catch (error) {
                 console.log(error)
             }
-        }
+        };
+        
         getCsvData();
 
     }, []);
 
-    console.log(data)
-
     const values = {
-        data
+        data,
+        moviesMappedWithRoles,
     }
 
     return (

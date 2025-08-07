@@ -1,5 +1,19 @@
+import { useState, useEffect, useContext } from 'react'
+import { MovieContext } from '../../contexts/MovieContext';
+
 export const Movies = () => {
+    const { data, moviesMappedWithRoles } = useContext(MovieContext);
+
     return (
-        <h1>Movies</h1>
+        <ul>
+            {data.movies.map(currentMovie => (
+                <div key={currentMovie.ID}>
+                    <li>{currentMovie.Title}</li>
+                    {moviesMappedWithRoles[currentMovie.ID]?.map((currentRole) => (
+                        <p>{currentRole.RoleName} - {data.actors.find(actor => actor.ID == currentRole.ActorID).FullName}</p>
+                    ))}
+                </div>
+            ))}
+        </ul>
     )
 }
