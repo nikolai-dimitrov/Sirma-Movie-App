@@ -14,7 +14,7 @@ export const MovieProvider = ({ children }) => {
 
     const [moviesMappedWithRoles, setMoviesMappedWithRoles] = useState({});
     const [actorsMappedWithRoles, setActorsMappedWithRoles] = useState({});
-    const [topActorPair, setTopActorPair] = useState({});
+    const [topActorPair, setTopActorPair] = useState([]);
 
     useEffect(() => {
         const getCsvData = async () => {
