@@ -1,7 +1,8 @@
 import { useState, useEffect, createContext } from 'react'
 
 import { csvFileProcessor } from '../services/csvFileProcessor'
-
+import { buildDataRelations } from '../utils/buildDataRelations';
+import { actorsPairMoviesMapper, getTopActorPair } from '../utils/actorsPairMoviesMapper';
 export const MovieContext = createContext();
 
 export const MovieProvider = ({ children }) => {
@@ -12,6 +13,8 @@ export const MovieProvider = ({ children }) => {
     })
 
     const [moviesMappedWithRoles, setMoviesMappedWithRoles] = useState({});
+    const [actorsMappedWithRoles, setActorsMappedWithRoles] = useState({});
+    const [topActorPair, setTopActorPair] = useState({});
 
     useEffect(() => {
         const getCsvData = async () => {
@@ -22,37 +25,41 @@ export const MovieProvider = ({ children }) => {
                     csvFileProcessor.getRoles(),
                 ]);
 
-                const moviesAndRoles = {};
-
-                roles.forEach((currentRole) => {
-                    if (!moviesAndRoles[currentRole.MovieID]) {
-                        moviesAndRoles[currentRole.MovieID] = [];
-                    }
-
-                    moviesAndRoles[currentRole.MovieID].push(currentRole);
-                });
+                const moviesAndRoles = buildDataRelations(roles, 'MovieID')
+                const actorsAndRoles = buildDataRelations(roles, 'ActorID')
+                const actorPair = getTopActorPair(moviesAndRoles);
 
                 setData({
                     movies,
                     actors,
                     roles
-                })
+                });
+
 
                 setMoviesMappedWithRoles(moviesAndRoles);
+                setActorsMappedWithRoles(actorsAndRoles);
+                setTopActorPair(actorPair)
 
             } catch (error) {
                 console.log(error)
             }
         };
-        
+
         getCsvData();
 
     }, []);
 
+
     const values = {
         data,
         moviesMappedWithRoles,
+        actorsMappedWithRoles,
+        topActorPair,
     }
+
+    console.log(moviesMappedWithRoles)
+    console.log(actorsMappedWithRoles)
+
 
     return (
         <MovieContext.Provider value={values}>
