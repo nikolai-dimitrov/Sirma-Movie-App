@@ -12,6 +12,11 @@ export const MovieProvider = ({ children }) => {
         roles: [],
     })
 
+    const [dataById, setDataById] = useState({
+        moviesObj: {},
+        actorsObj: {},
+    })
+
     const [moviesMappedWithRoles, setMoviesMappedWithRoles] = useState({});
     const [actorsMappedWithRoles, setActorsMappedWithRoles] = useState({});
     const [topActorPair, setTopActorPair] = useState([]);
@@ -25,6 +30,9 @@ export const MovieProvider = ({ children }) => {
                     csvFileProcessor.getRoles(),
                 ]);
 
+                const actorsObj = Object.fromEntries(actors.map((currentActor) => [currentActor.ID, currentActor]))
+                const moviesObj = Object.fromEntries(movies.map((currentMovie) => [currentMovie.ID, currentMovie]))
+
                 const moviesAndRoles = buildDataRelations(roles, 'MovieID')
                 const actorsAndRoles = buildDataRelations(roles, 'ActorID')
                 const actorPair = getTopActorPair(moviesAndRoles);
@@ -33,6 +41,11 @@ export const MovieProvider = ({ children }) => {
                     movies,
                     actors,
                     roles
+                });
+
+                setDataById({
+                    moviesObj,
+                    actorsObj,
                 });
 
 
@@ -52,13 +65,14 @@ export const MovieProvider = ({ children }) => {
 
     const values = {
         data,
+        dataById,
         moviesMappedWithRoles,
         actorsMappedWithRoles,
         topActorPair,
     }
 
-    console.log(moviesMappedWithRoles)
-    console.log(actorsMappedWithRoles)
+    // console.log(moviesMappedWithRoles)
+    // console.log(actorsMappedWithRoles)
 
 
     return (
