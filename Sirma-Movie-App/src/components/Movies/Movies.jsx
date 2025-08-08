@@ -11,7 +11,7 @@ export const Movies = () => {
                 <li key={currentMovie.ID}>
                     <p>{currentMovie.Title} - {currentMovie.ReleaseDate}</p>
                     {moviesMappedWithRoles[currentMovie.ID]?.map((currentRole, index) => (
-                        <p key={index} >{currentRole.RoleName} - {actorsById[currentRole.ActorID].FullName}</p>
+                        <p key={index}>{currentRole.RoleName == 'null' ? 'Unnamed' : currentRole.RoleName} - {actorsById[currentRole.ActorID].FullName}</p>
                     ))}
                 </li>
             ))}
