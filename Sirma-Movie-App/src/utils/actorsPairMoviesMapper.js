@@ -43,7 +43,5 @@ export const getTopActorPair = (moviesAndRoles) => {
 		}
 	}
 
-	return {
-		[actorPairId]: moviesArray,
-	};
+	return [actorPairId, moviesArray];
 };
