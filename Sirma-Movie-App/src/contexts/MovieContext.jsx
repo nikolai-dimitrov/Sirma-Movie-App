@@ -14,6 +14,7 @@ export const MovieProvider = ({ children }) => {
 
     const [moviesMappedWithRoles, setMoviesMappedWithRoles] = useState({});
     const [actorsMappedWithRoles, setActorsMappedWithRoles] = useState({});
+    const [detailedRoles, setDetailedRoles] = useState([]);
     const [topActorPair, setTopActorPair] = useState([]);
 
     useEffect(() => {
@@ -28,18 +29,20 @@ export const MovieProvider = ({ children }) => {
                 const actorsById = Object.fromEntries(actors.map((currentActor) => [currentActor.ID, currentActor]))
                 const moviesById = Object.fromEntries(movies.map((currentMovie) => [currentMovie.ID, currentMovie]))
 
-                const detailedRoles = roles.map((currentRole) => {
+                const seededRoles = roles.map((currentRole) => {
                     const movieId = currentRole.MovieID
                     const actorId = currentRole.ActorID
+
                     currentRole["MovieDetails"] = moviesById[movieId];
                     currentRole["ActorDetails"] = actorsById[actorId];
+
                     return currentRole
                 })
 
                 console.log(detailedRoles)
 
-                const moviesAndRoles = buildDataRelations(roles, 'MovieID', moviesById)
-                const actorsAndRoles = buildDataRelations(roles, 'ActorID', actorsById)
+                const moviesAndRoles = buildDataRelations(detailedRoles, 'MovieID')
+                const actorsAndRoles = buildDataRelations(detailedRoles, 'ActorID')
                 const actorPair = getTopActorPair(moviesAndRoles, moviesById);
 
                 setData({
@@ -47,9 +50,10 @@ export const MovieProvider = ({ children }) => {
                     actors,
                     roles
                 });
-                console.log('USE EFFECT IN CONTEXT')
+
                 setMoviesMappedWithRoles(moviesAndRoles);
                 setActorsMappedWithRoles(actorsAndRoles);
+                setDetailedRoles(seededRoles);
                 setTopActorPair(actorPair)
 
             } catch (error) {

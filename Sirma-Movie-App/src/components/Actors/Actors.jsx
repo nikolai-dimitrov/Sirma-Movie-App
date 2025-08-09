@@ -13,7 +13,7 @@ export const Actors = () => {
                         <h3>Movies:</h3>
                         {actorsMappedWithRoles[currentActor.ID]?.map((currentRole => (
                             <p key={`${currentActor.ID} - ${currentRole.MovieID}`}>
-                                {currentRole.MovieName} - {currentRole.RoleName}
+                                {currentRole.MovieDetails.Title} - {currentRole.RoleName}
                             </p>
                         )))}
                     </li>
