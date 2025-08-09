@@ -27,18 +27,18 @@ export const MovieProvider = ({ children }) => {
                 ]);
 
                 // Used for easier data seeding
-                const actorsById = Object.fromEntries(actors.map((currentActor) => [currentActor.ID, currentActor]))
-                const moviesById = Object.fromEntries(movies.map((currentMovie) => [currentMovie.ID, currentMovie]))
+                const actorsById = Object.fromEntries(actors.map((currentActor) => [currentActor.ID, currentActor]));
+                const moviesById = Object.fromEntries(movies.map((currentMovie) => [currentMovie.ID, currentMovie]));
 
                 const seededRoles = roles.map((currentRole) => {
-                    const movieId = currentRole.MovieID
-                    const actorId = currentRole.ActorID
+                    const movieId = currentRole.MovieID;
+                    const actorId = currentRole.ActorID;
 
                     currentRole["MovieDetails"] = moviesById[movieId];
                     currentRole["ActorDetails"] = actorsById[actorId];
 
                     return currentRole
-                })
+                });
 
                 const moviesAndRoles = buildMoviesRelations(movies, seededRoles);
                 const actorsAndRoles = buildActorsRelations(actors, seededRoles)
@@ -54,7 +54,7 @@ export const MovieProvider = ({ children }) => {
                 setMoviesMappedWithRoles(moviesAndRoles);
                 setActorsMappedWithRoles(actorsAndRoles);
                 setDetailedRoles(seededRoles);
-                setTopActorPair(actorPair)
+                setTopActorPair(actorPair);
 
             } catch (error) {
                 console.log(error)
@@ -70,26 +70,12 @@ export const MovieProvider = ({ children }) => {
             'ActorID': 51,
             'MovieID': 51,
             'RoleName': 'NewRole',
-            // 'ActorName':'New Actor',
-            // 'MovieName':'New Movie'
         }
 
         setData((prevState) => ({
             ...prevState,
             roles: [...prevState.roles, role]
         }))
-
-        // console.log(moviesMappedWithRoles,'movies mapped with roles')
-        // setMoviesMappedWithRoles((prevState) => ({
-        //     ...prevState,
-        //     [role.MovieID]: [...prevState[role.MovieID], role]
-        // }))
-
-        // setActorsMappedWithRoles((prevState) => ({
-        //     ...prevState,
-        //     [role.ActorID]: [...prevState[role.ActorID], role]
-        // }))
-        // console.log(role)
     }
 
     const addActor = () => {
@@ -97,30 +83,39 @@ export const MovieProvider = ({ children }) => {
             'ID': data.actors.length + 1,
             'FullName': `Actor ${data.movies.length + 1} Last Name`,
             'BirthDate': '1910-06-01',
+            roles: [],
         };
 
-        setData((prevState) => ({
-            ...prevState,
-            actors: [...prevState.actors, actor]
-        }))
+        setActorsMappedWithRoles((prevState) => (
+            [...prevState, actor]
+        ))
 
         console.log(actor)
     }
 
-    const addMovie = () => {
+    const addMovieHandler = (formValues) => {
         const movie = {
-            'ID': data.movies.length + 1,
-            'Title': `Movie Title ${data.movies.length + 1}`,
-            'ReleaseDate': '01/06/1920',
+            'ID': moviesMappedWithRoles.length + 1,
+            ...formValues,
+            roles: [],
         };
 
-        setData((prevState) => ({
-            ...prevState,
-            movies: [...prevState.movies, movie]
-        }))
+        setMoviesMappedWithRoles((prevState) => (
+            [...prevState, movie]
+        ))
 
-        console.log(movie)
+    };
 
+    const updateMovieHandler = (updatedMovie, movieId) => {
+        setMoviesMappedWithRoles((prevState) => (
+            prevState.map((currentMovie) => currentMovie.ID == movieId ? { ...currentMovie, ...updatedMovie } : currentMovie))
+        )
+    }
+
+    const deleteMovieHandler = (movieId) => {
+        setMoviesMappedWithRoles((prevState) => (
+            prevState.filter((currentMovie) => currentMovie.ID != movieId)
+        ))
     }
 
     const values = {
@@ -130,11 +125,11 @@ export const MovieProvider = ({ children }) => {
         topActorPair,
         addRole,
         addActor,
-        addMovie,
+        addMovieHandler,
+        updateMovieHandler,
+        deleteMovieHandler,
     }
 
-    // console.log(moviesMappedWithRoles)
-    // console.log(actorsMappedWithRoles)
 
 
     return (
