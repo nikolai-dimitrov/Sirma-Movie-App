@@ -28,6 +28,16 @@ export const MovieProvider = ({ children }) => {
                 const actorsById = Object.fromEntries(actors.map((currentActor) => [currentActor.ID, currentActor]))
                 const moviesById = Object.fromEntries(movies.map((currentMovie) => [currentMovie.ID, currentMovie]))
 
+                const detailedRoles = roles.map((currentRole) => {
+                    const movieId = currentRole.MovieID
+                    const actorId = currentRole.ActorID
+                    currentRole["MovieDetails"] = moviesById[movieId];
+                    currentRole["ActorDetails"] = actorsById[actorId];
+                    return currentRole
+                })
+
+                console.log(detailedRoles)
+
                 const moviesAndRoles = buildDataRelations(roles, 'MovieID', moviesById)
                 const actorsAndRoles = buildDataRelations(roles, 'ActorID', actorsById)
                 const actorPair = getTopActorPair(moviesAndRoles, moviesById);
@@ -46,32 +56,50 @@ export const MovieProvider = ({ children }) => {
                 console.log(error)
             }
         };
-
+        console.log(moviesMappedWithRoles)
         getCsvData();
 
     }, []);
 
+    useEffect(() => {
+        const actorsById = Object.fromEntries(data.actors.map((currentActor) => [currentActor.ID, currentActor]))
+        const moviesById = Object.fromEntries(data.movies.map((currentMovie) => [currentMovie.ID, currentMovie]))
+
+        const moviesAndRoles = buildDataRelations(data.roles, 'MovieID', moviesById)
+        const actorsAndRoles = buildDataRelations(data.roles, 'ActorID', actorsById)
+        const actorPair = getTopActorPair(moviesAndRoles, moviesById);
+
+        setMoviesMappedWithRoles(moviesAndRoles);
+        setActorsMappedWithRoles(actorsAndRoles);
+        setTopActorPair(actorPair)
+    }, [data])
+
     const addRole = () => {
         const role = {
             'ID': 52,
-            'ActorID': 1,
-            'MovieID': 1,
+            'ActorID': 51,
+            'MovieID': 51,
             'RoleName': 'NewRole',
-            'ActorName':'New Actor',
-            'MovieName':'New Movie'
+            // 'ActorName':'New Actor',
+            // 'MovieName':'New Movie'
         }
 
-        console.log(moviesMappedWithRoles,'movies mapped with roles')
-        setMoviesMappedWithRoles((prevState) => ({
+        setData((prevState) => ({
             ...prevState,
-            [role.MovieID]: [...prevState[role.MovieID], role]
+            roles: [...prevState.roles, role]
         }))
 
-        setActorsMappedWithRoles((prevState) => ({
-            ...prevState,
-            [role.ActorID]: [...prevState[role.ActorID], role]
-        }))
-        console.log(role)
+        // console.log(moviesMappedWithRoles,'movies mapped with roles')
+        // setMoviesMappedWithRoles((prevState) => ({
+        //     ...prevState,
+        //     [role.MovieID]: [...prevState[role.MovieID], role]
+        // }))
+
+        // setActorsMappedWithRoles((prevState) => ({
+        //     ...prevState,
+        //     [role.ActorID]: [...prevState[role.ActorID], role]
+        // }))
+        // console.log(role)
     }
 
     const addActor = () => {
