@@ -1,8 +1,8 @@
 import { useState, useEffect, createContext } from 'react'
 
 import { csvFileProcessor } from '../services/csvFileProcessor'
-import { buildDataRelations } from '../utils/buildDataRelations';
-import { actorsPairMoviesMapper, getTopActorPair } from '../utils/actorsPairMoviesMapper';
+import { buildActorsRelations, buildMoviesRelations } from '../utils/buildDataRelations';
+import { getTopActorPair } from '../utils/actorsPairMoviesMapper';
 export const MovieContext = createContext();
 
 export const MovieProvider = ({ children }) => {
@@ -12,8 +12,8 @@ export const MovieProvider = ({ children }) => {
         roles: [],
     })
 
-    const [moviesMappedWithRoles, setMoviesMappedWithRoles] = useState({});
-    const [actorsMappedWithRoles, setActorsMappedWithRoles] = useState({});
+    const [moviesMappedWithRoles, setMoviesMappedWithRoles] = useState([]);
+    const [actorsMappedWithRoles, setActorsMappedWithRoles] = useState([]);
     const [detailedRoles, setDetailedRoles] = useState([]);
     const [topActorPair, setTopActorPair] = useState([]);
 
@@ -26,6 +26,7 @@ export const MovieProvider = ({ children }) => {
                     csvFileProcessor.getRoles(),
                 ]);
 
+                // Used for easier data seeding
                 const actorsById = Object.fromEntries(actors.map((currentActor) => [currentActor.ID, currentActor]))
                 const moviesById = Object.fromEntries(movies.map((currentMovie) => [currentMovie.ID, currentMovie]))
 
@@ -39,11 +40,10 @@ export const MovieProvider = ({ children }) => {
                     return currentRole
                 })
 
-                console.log(detailedRoles)
+                const moviesAndRoles = buildMoviesRelations(movies, seededRoles);
+                const actorsAndRoles = buildActorsRelations(actors, seededRoles)
 
-                const moviesAndRoles = buildDataRelations(detailedRoles, 'MovieID')
-                const actorsAndRoles = buildDataRelations(detailedRoles, 'ActorID')
-                const actorPair = getTopActorPair(moviesAndRoles, moviesById);
+                const actorPair = getTopActorPair(moviesAndRoles);
 
                 setData({
                     movies,
@@ -60,23 +60,9 @@ export const MovieProvider = ({ children }) => {
                 console.log(error)
             }
         };
-        console.log(moviesMappedWithRoles)
         getCsvData();
 
     }, []);
-
-    useEffect(() => {
-        const actorsById = Object.fromEntries(data.actors.map((currentActor) => [currentActor.ID, currentActor]))
-        const moviesById = Object.fromEntries(data.movies.map((currentMovie) => [currentMovie.ID, currentMovie]))
-
-        const moviesAndRoles = buildDataRelations(data.roles, 'MovieID', moviesById)
-        const actorsAndRoles = buildDataRelations(data.roles, 'ActorID', actorsById)
-        const actorPair = getTopActorPair(moviesAndRoles, moviesById);
-
-        setMoviesMappedWithRoles(moviesAndRoles);
-        setActorsMappedWithRoles(actorsAndRoles);
-        setTopActorPair(actorPair)
-    }, [data])
 
     const addRole = () => {
         const role = {
