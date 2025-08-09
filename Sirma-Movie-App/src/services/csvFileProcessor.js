@@ -19,17 +19,28 @@ const parseCsv = async (filePath) => {
 		currentRowArray.forEach((currentRowElement, index) => {
 			const key = keysArray[index];
 			rowData[key] = currentRowElement;
+			if (index == currentRowArray.length - 1) {
+				rowData[key] = formatDate(currentRowElement);
+			}
 		});
 
 		parsedData.push(rowData);
 	});
-	
+
 	return parsedData;
+};
+
+const formatDate = (dateString) => {
+	let date = new Date(dateString);
+	if (date == "Invalid Date") {
+		return dateString;
+	}
+
+	return date.toISOString().split("T")[0];
 };
 
 export const csvFileProcessor = {
 	getActors: () => parseCsv("/data/actors.csv"),
 	getMovies: () => parseCsv("/data/movies.csv"),
 	getRoles: () => parseCsv("/data/roles.csv"),
-
 };
