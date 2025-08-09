@@ -1,36 +1,34 @@
-export const actorsPairMoviesMapper = (moviesAndRoles,moviesById) => {
+export const actorsPairMoviesMapper = (moviesAndRoles) => {
 	// Use mapper instead of counter to avoid later searching for the ids of the movies in which top actor pair played in
 	const actorsPairMoviesMapper = {};
-	for (const movieId in moviesAndRoles) {
-		const roles = moviesAndRoles[movieId];
+	for (const movie of moviesAndRoles) {
+		const roles = movie.roles;
 		// Sort in case of: first movie actors -> [3, 27], second movie actors [27, 3]. To prevent creating new key instead of increment the value existing one
-		roles.sort((roleA, roleB) => roleA.ActorID - roleB.ActorID);
+		if (roles) {
+			roles.sort((roleA, roleB) => roleA.ActorID - roleB.ActorID);
+			// Iterate the array with role objects for current movie and create all possible combinations of concatenated actor's id pairs
+			for (let i = 0; i < roles.length - 1; i++) {
+				const currentActorId = roles[i].ActorID;
+				for (let j = i + 1; j < roles.length; j++) {
+					const nextActorId = roles[j].ActorID;
+					const actorsIdPair = `${currentActorId}-${nextActorId}`;
 
-		// Iterate the array with role objects for current movie and create all possible combinations of concatenated actor's id pairs
-		for (let i = 0; i < roles.length - 1; i++) {
-			const currentActorId = roles[i].ActorID;
-			for (let j = i + 1; j < roles.length; j++) {
-				const nextActorId = roles[j].ActorID;
-				const actorsIdPair = `${currentActorId}-${nextActorId}`;
+					if (!actorsPairMoviesMapper[actorsIdPair]) {
+						actorsPairMoviesMapper[actorsIdPair] = [];
+					}
 
-				if (!actorsPairMoviesMapper[actorsIdPair]) {
-					actorsPairMoviesMapper[actorsIdPair] = [];
+					// Push movie in which they are acted in together on corresponding actors pair id
+					actorsPairMoviesMapper[actorsIdPair].push(movie);
 				}
-
-				// Push movie in which they are acted in together on corresponding actors pair id
-				actorsPairMoviesMapper[actorsIdPair].push(moviesById[movieId]);
 			}
 		}
 	}
-
 	return actorsPairMoviesMapper;
 };
 
-export const getTopActorPair = (moviesAndRoles, moviesById) => {
-	const actorsPairWithMovies = actorsPairMoviesMapper(
-		moviesAndRoles,
-		moviesById
-	);
+export const getTopActorPair = (moviesAndRoles) => {
+	const actorsPairWithMovies = actorsPairMoviesMapper(moviesAndRoles);
+
 	let lastMaxLength = 0;
 	let actorPairId = "";
 	let moviesArray = [];
