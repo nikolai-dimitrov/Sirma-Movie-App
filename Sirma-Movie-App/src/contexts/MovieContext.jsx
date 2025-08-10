@@ -2,6 +2,7 @@ import { useState, useEffect, createContext } from 'react'
 
 import { csvFileProcessor } from '../services/csvFileProcessor'
 import { buildActorsRelations, buildMoviesRelations } from '../utils/buildDataRelations';
+import { seedRoleDetails } from '../utils/seedRoleDetails';
 import { getTopActorPair } from '../utils/actorsPairMoviesMapper';
 export const MovieContext = createContext();
 
@@ -14,7 +15,6 @@ export const MovieProvider = ({ children }) => {
 
     const [moviesMappedWithRoles, setMoviesMappedWithRoles] = useState([]);
     const [actorsMappedWithRoles, setActorsMappedWithRoles] = useState([]);
-    const [detailedRoles, setDetailedRoles] = useState([]);
     const [topActorPair, setTopActorPair] = useState([]);
 
     useEffect(() => {
@@ -26,24 +26,6 @@ export const MovieProvider = ({ children }) => {
                     csvFileProcessor.getRoles(),
                 ]);
 
-                // Used for easier data seeding
-                const actorsById = Object.fromEntries(actors.map((currentActor) => [currentActor.ID, currentActor]));
-                const moviesById = Object.fromEntries(movies.map((currentMovie) => [currentMovie.ID, currentMovie]));
-
-                const seededRoles = roles.map((currentRole) => {
-                    const movieId = currentRole.MovieID;
-                    const actorId = currentRole.ActorID;
-
-                    currentRole["MovieDetails"] = moviesById[movieId];
-                    currentRole["ActorDetails"] = actorsById[actorId];
-
-                    return currentRole
-                });
-
-                const moviesAndRoles = buildMoviesRelations(movies, seededRoles);
-                const actorsAndRoles = buildActorsRelations(actors, seededRoles)
-
-                const actorPair = getTopActorPair(moviesAndRoles);
 
                 setData({
                     movies,
@@ -51,10 +33,6 @@ export const MovieProvider = ({ children }) => {
                     roles
                 });
 
-                setMoviesMappedWithRoles(moviesAndRoles);
-                setActorsMappedWithRoles(actorsAndRoles);
-                setDetailedRoles(seededRoles);
-                setTopActorPair(actorPair);
 
             } catch (error) {
                 console.log(error)
@@ -64,12 +42,26 @@ export const MovieProvider = ({ children }) => {
 
     }, []);
 
+    useEffect(() => {
+        const seededRoles = seedRoleDetails(data)
+
+        const moviesAndRoles = buildMoviesRelations(data.movies, seededRoles);
+        const actorsAndRoles = buildActorsRelations(data.actors, seededRoles)
+
+        const actorPair = getTopActorPair(moviesAndRoles);
+
+        setMoviesMappedWithRoles(moviesAndRoles);
+        setActorsMappedWithRoles(actorsAndRoles);
+        setTopActorPair(actorPair);
+
+    }, [data])
+
     const addRole = () => {
         const role = {
             'ID': 52,
-            'ActorID': 51,
-            'MovieID': 51,
-            'RoleName': 'NewRole',
+            'ActorID': 50,
+            'MovieID': 50,
+            'RoleName': 'NewRole SEEDED',
         }
 
         setData((prevState) => ({
@@ -90,7 +82,6 @@ export const MovieProvider = ({ children }) => {
             [...prevState, actor]
         ))
 
-        console.log(actor)
     }
 
     const addMovieHandler = (formValues) => {
@@ -100,22 +91,26 @@ export const MovieProvider = ({ children }) => {
             roles: [],
         };
 
-        setMoviesMappedWithRoles((prevState) => (
-            [...prevState, movie]
-        ))
+        setData((prevState) => ({
+            ...prevState,
+            movies: [...prevState.movies, movie]
+        }))
 
     };
 
     const updateMovieHandler = (updatedMovie, movieId) => {
-        setMoviesMappedWithRoles((prevState) => (
-            prevState.map((currentMovie) => currentMovie.ID == movieId ? { ...currentMovie, ...updatedMovie } : currentMovie))
-        )
+        setData((prevState) => ({
+            ...prevState,
+            movies: prevState.movies.map((currentMovie) => currentMovie.ID == movieId ? { ...currentMovie, ...updatedMovie } : currentMovie)
+        }))
     }
 
     const deleteMovieHandler = (movieId) => {
-        setMoviesMappedWithRoles((prevState) => (
-            prevState.filter((currentMovie) => currentMovie.ID != movieId)
-        ))
+        setData((prevState) => ({
+            ...prevState,
+            movies: prevState.movies.filter((currentMovie) => currentMovie.ID != movieId),
+            roles:prevState.roles.filter((currentRole) => currentRole.MovieID != movieId),
+        }))
     }
 
     const values = {
