@@ -1,42 +1,56 @@
 import { useState, useContext } from 'react'
 import { MovieContext } from '../../contexts/MovieContext'
-import { CreateMovie } from './CreateMovie/CreateMovie'
-import { UpdateMovie } from './UpdateMovie/UpdateMovie'
+import { MovieForm } from './MovieForm/MovieForm'
+import { FaEdit } from 'react-icons/fa'
+import { MdDelete } from 'react-icons/md'
 
 import styles from './movies.module.css'
 
 export const Movies = () => {
     const { moviesMappedWithRoles, addMovieHandler, updateMovieHandler, deleteMovieHandler } = useContext(MovieContext);
-    const [updateItemId, setUpdateItemId] = useState(null);
+    const [movie, setMovie] = useState({});
+    const [isUpdating, setIsUpdating] = useState(false);
 
-    const switchUpdateItemPrompt = (movieId) => {
-        updateItemId ? setUpdateItemId(null) : setUpdateItemId(movieId);
+    const finishUpdate = () => {
+        setMovie({});
+        setIsUpdating(false);
     }
+
+
+    const updateClickHandler = (currentMovie) => {
+        setMovie(currentMovie)
+        setIsUpdating(true);
+
+        if (movie == currentMovie) {
+            finishUpdate();
+        }
+    }
+
+    const deleteClickHandler = (movieId) => {
+        if (isUpdating) {
+            finishUpdate();
+        }
+
+        deleteMovieHandler(movieId)
+    }
+
 
     return (
         <>
-            <CreateMovie addMovieHandler={addMovieHandler} />
+            <MovieForm movie={movie} submitHandler={isUpdating ? updateMovieHandler : addMovieHandler} finishUpdate={finishUpdate} isUpdating={isUpdating} />
             <ul>
                 {moviesMappedWithRoles?.map(currentMovie => (
                     <li key={currentMovie.ID}>
                         <div>
-                            {updateItemId == currentMovie.ID ?
-                                <>
-                                    <UpdateMovie movie={currentMovie} updateMovieHandler={updateMovieHandler} switchUpdateItemPrompt={switchUpdateItemPrompt} />
-                                </> :
-                                <>
-                                    <p>{currentMovie.Title} - {currentMovie.ReleaseDate}</p>
-                                </>
-
-                            }
-
+                            <p>{currentMovie.Title} - {currentMovie.ReleaseDate}</p>
                             {currentMovie.roles.map((currentRole, index) => (
                                 <p key={index}>{currentRole.RoleName == 'null' ? 'Unnamed' : currentRole.RoleName} - {currentRole.ActorDetails?.FullName}</p>
                             ))}
                         </div>
                         <div>
-                            <button onClick={() => switchUpdateItemPrompt(currentMovie.ID)}>|</button>
-                            <button onClick={() => deleteMovieHandler(currentMovie.ID)}>X</button>
+                            <button onClick={() => updateClickHandler(currentMovie)}><FaEdit /></button>
+
+                            <button onClick={() => deleteClickHandler(currentMovie.ID)}><MdDelete /></button>
                         </div>
 
                     </li>

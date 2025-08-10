@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 export const useForm = (initialFormValues, submitHandler) => {
 	const [formValues, setFormValues] = useState(initialFormValues);
+	useEffect(() => {
+		setFormValues(initialFormValues);
+	}, [initialFormValues]);
 
 	const clearFormValues = () => {
 		const formValuesCopy = { ...formValues };
-		Object.keys(formValues).forEach(
+		Object.keys(formValuesCopy).forEach(
 			(currentKey) => (formValuesCopy[currentKey] = "")
 		);
 
