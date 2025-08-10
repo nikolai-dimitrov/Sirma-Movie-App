@@ -70,20 +70,6 @@ export const MovieProvider = ({ children }) => {
         }))
     }
 
-    const addActor = () => {
-        const actor = {
-            'ID': data.actors.length + 1,
-            'FullName': `Actor ${data.movies.length + 1} Last Name`,
-            'BirthDate': '1910-06-01',
-            roles: [],
-        };
-
-        setActorsMappedWithRoles((prevState) => (
-            [...prevState, actor]
-        ))
-
-    }
-
     const addMovieHandler = (formValues) => {
         const movie = {
             'ID': moviesMappedWithRoles.length + 1,
@@ -109,7 +95,36 @@ export const MovieProvider = ({ children }) => {
         setData((prevState) => ({
             ...prevState,
             movies: prevState.movies.filter((currentMovie) => currentMovie.ID != movieId),
-            roles:prevState.roles.filter((currentRole) => currentRole.MovieID != movieId),
+            roles: prevState.roles.filter((currentRole) => currentRole.MovieID != movieId),
+        }))
+    }
+
+    const addActorHandler = (formValues) => {
+        const actor = {
+            'ID': actorsMappedWithRoles.length + 1,
+            ...formValues,
+            roles: [],
+        };
+
+        setData((prevState) => ({
+            ...prevState,
+            actors: [...prevState.actors, actor]
+        }))
+
+    };
+
+    const updateActorHandler = (updatedActor, actorId) => {
+        setData((prevState) => ({
+            ...prevState,
+            actors: prevState.actors.map((currentActor) => currentActor.ID == actorId ? { ...currentActor, ...updatedActor } : currentActor)
+        }))
+    }
+
+    const deleteActorHandler = (actorId) => {
+        setData((prevState) => ({
+            ...prevState,
+            actors: prevState.actors.filter((currentActor) => currentActor.ID != actorId),
+            roles: prevState.roles.filter((currentRole) => currentRole.ActorID != actorId),
         }))
     }
 
@@ -119,10 +134,13 @@ export const MovieProvider = ({ children }) => {
         actorsMappedWithRoles,
         topActorPair,
         addRole,
-        addActor,
         addMovieHandler,
         updateMovieHandler,
         deleteMovieHandler,
+        addActorHandler,
+        updateActorHandler,
+        deleteActorHandler,
+
     }
 
 

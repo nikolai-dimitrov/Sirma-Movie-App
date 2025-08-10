@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { useForm } from '../../../hooks/useForm'
 export const UpdateMovie = ({ movie, updateMovieHandler, switchUpdateItemPrompt }) => {
     const { formValues, onChangeHandler, onSubmitHandler } = useForm({
@@ -24,7 +23,7 @@ export const UpdateMovie = ({ movie, updateMovieHandler, switchUpdateItemPrompt 
 
                 <input
                     type='date'
-                    id='title'
+                    id='ReleaseDate'
                     name='ReleaseDate'
                     onChange={onChangeHandler}
                     value={formValues['ReleaseDate']} />
