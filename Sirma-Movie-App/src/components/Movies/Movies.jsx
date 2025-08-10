@@ -6,7 +6,7 @@ import { UpdateMovie } from './UpdateMovie/UpdateMovie'
 import styles from './movies.module.css'
 
 export const Movies = () => {
-    const { moviesMappedWithRoles, addMovieHandler, updateMovieHandler, deleteMovieHandler, addRole } = useContext(MovieContext);
+    const { moviesMappedWithRoles, addMovieHandler, updateMovieHandler, deleteMovieHandler } = useContext(MovieContext);
     const [updateItemId, setUpdateItemId] = useState(null);
 
     const switchUpdateItemPrompt = (movieId) => {
@@ -16,9 +16,6 @@ export const Movies = () => {
     return (
         <>
             <CreateMovie addMovieHandler={addMovieHandler} />
-
-
-            <button onClick={addRole}>Add Role</button>
             <ul>
                 {moviesMappedWithRoles?.map(currentMovie => (
                     <li key={currentMovie.ID}>
