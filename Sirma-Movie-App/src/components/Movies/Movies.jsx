@@ -1,6 +1,8 @@
 import { useState, useContext } from 'react'
+
 import { MovieContext } from '../../contexts/MovieContext'
 import { MovieForm } from './MovieForm/MovieForm'
+
 import { FaEdit } from 'react-icons/fa'
 import { MdDelete } from 'react-icons/md'
 

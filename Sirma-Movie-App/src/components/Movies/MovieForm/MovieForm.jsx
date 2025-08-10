@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 
 import { useForm } from "../../../hooks/useForm"
+
 import { IoMdAdd } from 'react-icons/io'
 import { GiSaveArrow } from 'react-icons/gi'
 
@@ -30,7 +31,7 @@ export const MovieForm = ({ movie, submitHandler, finishUpdate, isUpdating }) =>
         <form action="" onSubmit={(e) => onFormSubmitHandler(e, movie.ID)}>
             <input
                 type='text'
-                id='title'
+                id='Title'
                 name='Title'
                 onChange={onChangeHandler}
                 value={formValues['Title']}
