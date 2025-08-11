@@ -62,8 +62,8 @@ export const Movies = () => {
                         </div>
 
                         <div className={styles.detailsContainer}>
-                            <div className={toggledMovieDetailsId == currentMovie.ID ? `${styles.actorsContainer}` : `${styles.actorsContainer} ${styles.hidden}`}>
-                                <p className={styles.releaseDate}>Release Date: {currentMovie.ReleaseDate}</p>
+                            <div className={toggledMovieDetailsId == currentMovie.ID ? `` : `${styles.hidden}`}>
+                                <p>Release Date: {currentMovie.ReleaseDate}</p>
                                 {currentMovie.roles.length > 0 && <h4>Actors and Roles:</h4>}
                                 {currentMovie.roles.map((currentRole, index) => (
                                     <p className={styles.actorDetails} key={index}>{currentRole.ActorDetails?.FullName} - {currentRole.RoleName == 'NULL' ? 'Unnamed' : currentRole.RoleName}</p>

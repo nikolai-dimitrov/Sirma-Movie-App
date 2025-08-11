@@ -74,20 +74,17 @@
 }
 
 /* Details */
-.releaseDate {
-    margin: 0 0 7px 7px;
-}
-
 .detailsContainer h4 {
 	color: var(--primary-color);
 }
 
 .detailsContainer p {
-	color: #bbbbbb;
+    margin: 0 0 2px 7px;
+
 }
 
-.actorsContainer {
-	padding-left: 7px;
+.detailsContainer p {
+	color: #bbbbbb;
 }
 
 .actorDetails {
