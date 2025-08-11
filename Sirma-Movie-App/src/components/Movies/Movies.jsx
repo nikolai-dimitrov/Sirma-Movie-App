@@ -12,6 +12,7 @@ export const Movies = () => {
     const { moviesMappedWithRoles, addMovieHandler, updateMovieHandler, deleteMovieHandler } = useContext(MovieContext);
     const [movie, setMovie] = useState({});
     const [isUpdating, setIsUpdating] = useState(false);
+    const [toggledMovieDetailsId, setToggledMovieDetailsId] = useState(null);
 
     const finishUpdate = () => {
         setMovie({});
@@ -20,7 +21,7 @@ export const Movies = () => {
 
 
     const updateClickHandler = (currentMovie) => {
-        setMovie(currentMovie)
+        setMovie(currentMovie);
         setIsUpdating(true);
 
         if (movie == currentMovie) {
@@ -33,31 +34,45 @@ export const Movies = () => {
             finishUpdate();
         }
 
-        deleteMovieHandler(movieId)
+        deleteMovieHandler(movieId);
+    }
+
+    const toggleMovieDetails = (currentMovie) => {
+        setToggledMovieDetailsId(currentMovie.ID);
+        if(currentMovie.ID == toggledMovieDetailsId) {
+            setToggledMovieDetailsId(null);
+        }
     }
 
 
     return (
-        <>
+        <section className={styles.movies}>
             <MovieForm movie={movie} submitHandler={isUpdating ? updateMovieHandler : addMovieHandler} finishUpdate={finishUpdate} isUpdating={isUpdating} />
-            <ul>
+            <ul className={styles.moviesList}>
                 {moviesMappedWithRoles?.map(currentMovie => (
-                    <li key={currentMovie.ID}>
-                        <div>
-                            <p>{currentMovie.Title} - {currentMovie.ReleaseDate}</p>
-                            {currentMovie.roles.map((currentRole, index) => (
-                                <p key={index}>{currentRole.RoleName == 'null' ? 'Unnamed' : currentRole.RoleName} - {currentRole.ActorDetails?.FullName}</p>
-                            ))}
-                        </div>
-                        <div>
-                            <button onClick={() => updateClickHandler(currentMovie)}><FaEdit /></button>
-
-                            <button onClick={() => deleteClickHandler(currentMovie.ID)}><MdDelete /></button>
+                    <li key={currentMovie.ID} className={styles.movieItem}>
+                        <div className={styles.movieSummary}>
+                            <div className={styles.titleContainer}>
+                                <p onClick={() => toggleMovieDetails(currentMovie)} className={styles.title}>{currentMovie.Title}</p>
+                            </div>
+                            <div className={styles.buttonsContainer}>
+                                <button className={styles.updateBtn} onClick={() => updateClickHandler(currentMovie)}><FaEdit /></button>
+                                <button className={styles.deleteBtn} onClick={() => deleteClickHandler(currentMovie.ID)}><MdDelete /></button>
+                            </div>
                         </div>
 
+                        <div className={styles.detailsContainer}>
+                            <div className={toggledMovieDetailsId == currentMovie.ID ? `${styles.actorsContainer}` : `${styles.actorsContainer} ${styles.hidden}`}>
+                                <p className={styles.releaseDate}>Release Date: {currentMovie.ReleaseDate}</p>
+                                {currentMovie.roles.length > 0 && <h4>Actors and Roles:</h4>}
+                                {currentMovie.roles.map((currentRole, index) => (
+                                    <p className={styles.actorDetails} key={index}>{currentRole.ActorDetails?.FullName} - {currentRole.RoleName == 'NULL' ? 'Unnamed' : currentRole.RoleName}</p>
+                                ))}
+                            </div>
+                        </div>
                     </li>
                 ))}
             </ul>
-        </>
+        </section>
     )
 }
