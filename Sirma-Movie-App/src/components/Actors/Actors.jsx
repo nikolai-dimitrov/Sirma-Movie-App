@@ -18,7 +18,7 @@ export const Actors = () => {
     }
 
     const updateClickHandler = (currentActor) => {
-        setActor(currentActor)
+        setActor(currentActor);
         setIsUpdating(true);
 
         if (actor == currentActor) {
@@ -31,7 +31,7 @@ export const Actors = () => {
             finishUpdate();
         }
 
-        deleteActorHandler(actorId)
+        deleteActorHandler(actorId);
     }
     return (
         <>
