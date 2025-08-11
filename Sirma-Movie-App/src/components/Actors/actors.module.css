@@ -1,0 +1,99 @@
+.actors {
+	margin: 0 auto;
+	width: 355px;
+}
+
+.actorsList {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	height: calc(100vh - 235px);
+	overflow: auto;
+}
+
+.actorItem {
+	background-color: #1e1e1e;
+	padding: 10px 15px;
+	box-shadow: 0px 0px 4px rgb(255 255 255 / 7%);
+}
+
+.actorSummary {
+	display: flex;
+	justify-content: space-between;
+    gap: 40px;
+}
+
+.titleContainer {
+	overflow: hidden;
+}
+
+.title {
+	color: var(--primary-color);
+	font-size: 17px;
+	overflow: auto;
+	overflow-y: hidden;
+	white-space: nowrap;
+    cursor: pointer;
+}
+
+.buttonsContainer {
+	display: flex;
+	gap: 10px;
+}
+
+.updateBtn,
+.deleteBtn {
+	background-color: transparent;
+	border: unset;
+	cursor: pointer;
+}
+
+.updateBtn {
+	color: green;
+}
+
+.deleteBtn {
+	color: #c70000;
+}
+
+.actors ::-webkit-scrollbar {
+	background-color: #242424;
+	height: 5px;
+	width: 5px;
+	border-radius: 8px;
+}
+
+.actors ::-webkit-scrollbar-track {
+	background-color: #242424;
+	border-radius: 8px;
+}
+
+.actors ::-webkit-scrollbar-thumb {
+	background-color: #6b6b6b;
+	border-radius: 8px;
+}
+
+/* Details */
+
+.detailsContainer h4 {
+	color: var(--primary-color);
+}
+
+.detailsContainer p {
+    margin: 0 0 2px 7px;
+
+}
+
+.detailsContainer p {
+	color: #bbbbbb;
+}
+
+
+.movieDetails {
+    overflow: auto;
+    white-space: nowrap;
+}
+
+.hidden {
+    display: none;
+}

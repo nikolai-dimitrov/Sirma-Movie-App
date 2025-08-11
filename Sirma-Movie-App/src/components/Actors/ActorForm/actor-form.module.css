@@ -1,0 +1,56 @@
+.actorForm {
+	background-color: transparent;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 25px;
+}
+
+.inputWrapper {
+	position: relative;
+}
+
+.inputWrapper:nth-of-type(2) {
+	margin-left: 20px;
+}
+
+.actorForm label {
+	position: absolute;
+	top: -12px;
+	left: 6px;
+	background-color: #242424;
+	z-index: 2;
+	padding: 0px 3px 0px 3px;
+	color: var(--primary-color);
+	font-size: 15px;
+}
+
+.actorForm input {
+	background-color: #242424;
+	border: 1px solid #3a3a3a;
+	color: #bbbbbb;
+	padding: 6px 9px;
+	border-radius: 8px;
+	font-size: 14px;
+}
+
+.actorForm input[type="date"] {
+	padding: 5px 5px;
+	padding-left: 10px;
+}
+
+.actorForm input:focus {
+	outline: none;
+	box-shadow: 0 0 4px #3a3a3a;
+}
+
+.actorForm input::placeholder {
+	color: #bbbbbb;
+}
+
+.actorForm button {
+	background-color: transparent;
+	border: unset;
+	color: green;
+	cursor: pointer;
+}

@@ -5,6 +5,8 @@ import { useForm } from "../../../hooks/useForm"
 import { IoMdAdd } from 'react-icons/io'
 import { GiSaveArrow } from 'react-icons/gi'
 
+import styles from './actor-form.module.css'
+
 export const ActorForm = ({ actor, submitHandler, finishUpdate, isUpdating }) => {
     const [initialFormValues, setInitialFormValues] = useState({
         'FullName': '',
@@ -15,7 +17,7 @@ export const ActorForm = ({ actor, submitHandler, finishUpdate, isUpdating }) =>
     useEffect(() => {
         setInitialFormValues({
             'FullName': isUpdating ? actor.FullName : '',
-            'BirthDate': isUpdating ? actor.BirthDate: ''
+            'BirthDate': isUpdating ? actor.BirthDate : ''
 
         });
     }, [actor]);
@@ -26,22 +28,26 @@ export const ActorForm = ({ actor, submitHandler, finishUpdate, isUpdating }) =>
     };
 
     return (
-        <form action="" onSubmit={(e) => onFormSubmitHandler(e, actor.ID)}>
-            <input
-                type='text'
-                id='FullName'
-                name='FullName'
-                onChange={onChangeHandler}
-                value={formValues['FullName']}
-            />
-
-            <input
-                type='date'
-                id='BirthDate'
-                name='BirthDate'
-                onChange={onChangeHandler}
-                value={formValues['BirthDate']}
-            />
+        <form className={styles.actorForm} action="" onSubmit={(e) => onFormSubmitHandler(e, actor.ID)}>
+            <div className={styles.inputWrapper}>
+                <label htmlFor="Title">Name</label>
+                <input
+                    id='FullName'
+                    name='FullName'
+                    onChange={onChangeHandler}
+                    value={formValues['FullName']}
+                />
+            </div>
+            <div className={styles.inputWrapper}>
+                <label htmlFor="Title">Birth Date</label>
+                <input
+                    type='date'
+                    id='BirthDate'
+                    name='BirthDate'
+                    onChange={onChangeHandler}
+                    value={formValues['BirthDate']}
+                />
+            </div>
             <button>{isUpdating ? <GiSaveArrow /> : <IoMdAdd />}</button>
         </form>
     )
