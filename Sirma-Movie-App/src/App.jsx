@@ -5,6 +5,7 @@ import { Home } from './components/Home/Home'
 import { Movies } from './components/Movies/Movies'
 import { Actors } from './components/Actors/Actors'
 import { Navigation } from './components/Navigation/Navigation'
+import { Footer } from './components/Footer/Footer'
 
 function App() {
   return (
@@ -21,7 +22,9 @@ function App() {
           </Routes>
         </MovieProvider>
       </main>
-      <footer></footer>
+      <footer>
+        <Footer />
+      </footer>
 
     </>
   )

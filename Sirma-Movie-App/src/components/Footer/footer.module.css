@@ -1,0 +1,21 @@
+.footerContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 15px 30px;
+}
+
+.heading {
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.gitHub {
+    display: flex;
+    gap: 10px;
+    font-size: 17px;
+    color: var(--primary-color);
+}
