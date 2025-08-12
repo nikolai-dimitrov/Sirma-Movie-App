@@ -15,7 +15,6 @@ export const MovieProvider = ({ children }) => {
 
     const [moviesMappedWithRoles, setMoviesMappedWithRoles] = useState([]);
     const [actorsMappedWithRoles, setActorsMappedWithRoles] = useState([]);
-    const [topActorPair, setTopActorPair] = useState([]);
 
     useEffect(() => {
         const getCsvData = async () => {
@@ -48,11 +47,9 @@ export const MovieProvider = ({ children }) => {
         const moviesAndRoles = buildMoviesRelations(data.movies, seededRoles);
         const actorsAndRoles = buildActorsRelations(data.actors, seededRoles)
 
-        const actorPair = getTopActorPair(moviesAndRoles);
 
         setMoviesMappedWithRoles(moviesAndRoles);
         setActorsMappedWithRoles(actorsAndRoles);
-        setTopActorPair(actorPair);
 
     }, [data])
 
@@ -135,7 +132,6 @@ export const MovieProvider = ({ children }) => {
         data,
         moviesMappedWithRoles,
         actorsMappedWithRoles,
-        topActorPair,
         addRole,
         addMovieHandler,
         updateMovieHandler,

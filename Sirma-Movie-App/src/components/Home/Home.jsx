@@ -1,12 +1,21 @@
-import { useContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { MovieContext } from '../../contexts/MovieContext';
+
+import { getTopActorPair } from '../../utils//actorsPairMoviesMapper';
+
 export const Home = () => {
-    const { data, topActorPair } = useContext(MovieContext);
+    const { data, moviesMappedWithRoles } = useContext(MovieContext);
+    const [topActorPair, setTopActorPair] = useState([]);
+
+    useEffect(() => {
+        const actorPair = getTopActorPair(moviesMappedWithRoles);
+        setTopActorPair(actorPair);
+    }, [moviesMappedWithRoles]);
 
     const [actorIdPair, moviesPlayed] = topActorPair;
     const [firstActorId, secondActorId] = actorIdPair?.split("-") || [];
     const [firstActor, secondActor] = data.actors.filter((el) => (el.ID == firstActorId || el.ID == secondActorId));
-    
+
     const sharedMoviesCount = moviesPlayed?.length;
 
     return (
