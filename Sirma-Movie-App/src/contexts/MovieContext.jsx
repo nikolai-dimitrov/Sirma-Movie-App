@@ -71,8 +71,9 @@ export const MovieProvider = ({ children }) => {
     }
 
     const addMovieHandler = (formValues) => {
+        const highestId = Math.max(...data.movies.map((currentMovie) => currentMovie.ID))
         const movie = {
-            'ID': moviesMappedWithRoles.length + 1,
+            'ID': highestId + 1,
             ...formValues,
             roles: [],
         };
@@ -100,8 +101,10 @@ export const MovieProvider = ({ children }) => {
     }
 
     const addActorHandler = (formValues) => {
+        const highestId = Math.max(...data.actors.map((currentActor) => currentActor.ID))
+
         const actor = {
-            'ID': actorsMappedWithRoles.length + 1,
+            'ID': highestId + 1,
             ...formValues,
             roles: [],
         };
