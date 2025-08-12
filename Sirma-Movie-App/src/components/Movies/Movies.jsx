@@ -1,7 +1,8 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useMemo } from 'react'
 
 import { MovieContext } from '../../contexts/MovieContext'
 import { MovieForm } from './MovieForm/MovieForm'
+import { useDebouncedSearch } from '../../hooks/useDebouncedSearch'
 
 import { FaEdit } from 'react-icons/fa'
 import { MdDelete } from 'react-icons/md'
@@ -11,8 +12,15 @@ import styles from './movies.module.css'
 export const Movies = () => {
     const { moviesMappedWithRoles, addMovieHandler, updateMovieHandler, deleteMovieHandler } = useContext(MovieContext);
     const [movie, setMovie] = useState({});
+    const [searchParam, setSearchParam] = useState('');
+    const debouncedSearchParam = useDebouncedSearch(searchParam);
     const [isUpdating, setIsUpdating] = useState(false);
     const [toggledMovieDetailsId, setToggledMovieDetailsId] = useState(null);
+
+    const filteredMovies = useMemo(() => moviesMappedWithRoles.filter((currentMovie) => {
+        return currentMovie.Title.toLowerCase().includes(debouncedSearchParam.toLowerCase());
+    }), [moviesMappedWithRoles, debouncedSearchParam]);
+
 
     const finishUpdate = () => {
         setMovie({});
@@ -39,17 +47,29 @@ export const Movies = () => {
 
     const toggleMovieDetails = (currentMovie) => {
         setToggledMovieDetailsId(currentMovie.ID);
-        if(currentMovie.ID == toggledMovieDetailsId) {
+        if (currentMovie.ID == toggledMovieDetailsId) {
             setToggledMovieDetailsId(null);
         }
+    }
+
+    const onChangeHandler = (e) => {
+        setSearchParam(e.target.value);
     }
 
 
     return (
         <section className={styles.movies}>
             <MovieForm movie={movie} submitHandler={isUpdating ? updateMovieHandler : addMovieHandler} finishUpdate={finishUpdate} isUpdating={isUpdating} />
+            <input
+                type="text"
+                id='SearchParam'
+                name='SearchParam'
+                placeholder='Search Movie Title'
+                onChange={onChangeHandler}
+                value={searchParam}
+            />
             <ul className={styles.moviesList}>
-                {moviesMappedWithRoles?.map(currentMovie => (
+                {filteredMovies?.map(currentMovie => (
                     <li key={currentMovie.ID} className={styles.movieItem}>
                         <div className={styles.movieSummary}>
                             <div className={styles.titleContainer}>
