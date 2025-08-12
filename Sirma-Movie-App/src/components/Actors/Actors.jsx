@@ -1,7 +1,8 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useMemo } from 'react'
 
 import { MovieContext } from '../../contexts/MovieContext';
 import { ActorForm } from './ActorForm/ActorForm';
+import { useDebouncedSearch } from '../../hooks/useDebouncedSearch';
 
 import { FaEdit } from 'react-icons/fa'
 import { MdDelete } from 'react-icons/md'
@@ -9,12 +10,20 @@ import { MdDelete } from 'react-icons/md'
 import styles from './actors.module.css'
 
 export const Actors = () => {
-    const { actorsMappedWithRoles, addActorHandler, updateActorHandler, deleteActorHandler, addRole } = useContext(MovieContext);
+    const { actorsMappedWithRoles, addActorHandler, updateActorHandler, deleteActorHandler } = useContext(MovieContext);
+
+    const [searchParam, setSearchParam] = useState('');
+    const debouncedSearchParam = useDebouncedSearch(searchParam);
+
     const [toggledMovieDetailsId, setToggledMovieDetailsId] = useState(null);
 
 
     const [actor, setActor] = useState({});
     const [isUpdating, setIsUpdating] = useState(false);
+
+    const filteredActors = useMemo(() => actorsMappedWithRoles.filter((currentActor) => {
+        return currentActor.FullName.toLowerCase().includes(debouncedSearchParam.toLowerCase());
+    }), [actorsMappedWithRoles, debouncedSearchParam]);
 
     const finishUpdate = () => {
         setActor({});
@@ -44,11 +53,24 @@ export const Actors = () => {
             setToggledMovieDetailsId(null);
         }
     }
+
+    const onChangeHandler = (e) => {
+        setSearchParam(e.target.value);
+    }
+
     return (
         <section className={styles.actors}>
             <ActorForm actor={actor} submitHandler={isUpdating ? updateActorHandler : addActorHandler} finishUpdate={finishUpdate} isUpdating={isUpdating} />
+            <input
+                type="text"
+                id='SearchParam'
+                name='SearchParam'
+                placeholder='Search Actors'
+                onChange={onChangeHandler}
+                value={searchParam}
+            />
             <ul className={styles.actorsList}>
-                {actorsMappedWithRoles?.map(currentActor => (
+                {filteredActors?.map(currentActor => (
                     <li key={currentActor.ID} className={styles.actorItem}>
                         <div className={styles.actorSummary}>
                             <div className={styles.titleContainer}>
