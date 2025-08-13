@@ -3,7 +3,7 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin-bottom: 25px;
+	margin-bottom: 10px;
 }
 
 .inputWrapper {
@@ -25,28 +25,6 @@
 	font-size: 15px;
 }
 
-.actorForm input {
-	background-color: #242424;
-	border: 1px solid #3a3a3a;
-	color: #bbbbbb;
-	padding: 6px 9px;
-	border-radius: 8px;
-	font-size: 14px;
-}
-
-.actorForm input[type="date"] {
-	padding: 5px 5px;
-	padding-left: 10px;
-}
-
-.actorForm input:focus {
-	outline: none;
-	box-shadow: 0 0 4px #3a3a3a;
-}
-
-.actorForm input::placeholder {
-	color: #bbbbbb;
-}
 
 .actorForm button {
 	background-color: transparent;

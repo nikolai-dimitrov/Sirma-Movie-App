@@ -3,11 +3,15 @@
 	width: 355px;
 }
 
+.searchInputWrapper {
+	margin-bottom: 25px;
+}
+
 .moviesList {
 	display: flex;
 	flex-direction: column;
 	gap: 5px;
-	height: calc(100vh - 235px);
+	height: calc(100vh - 277px);
 	overflow: auto;
 }
 
@@ -20,7 +24,7 @@
 .movieSummary {
 	display: flex;
 	justify-content: space-between;
-    gap: 40px;
+	gap: 40px;
 }
 
 .titleContainer {
@@ -33,7 +37,7 @@
 	overflow: auto;
 	overflow-y: hidden;
 	white-space: nowrap;
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .buttonsContainer {
@@ -79,8 +83,7 @@
 }
 
 .detailsContainer p {
-    margin: 0 0 2px 7px;
-
+	margin: 0 0 2px 7px;
 }
 
 .detailsContainer p {
@@ -88,10 +91,10 @@
 }
 
 .actorDetails {
-    overflow: auto;
-    white-space: nowrap;
+	overflow: auto;
+	white-space: nowrap;
 }
 
 .hidden {
-    display: none;
+	display: none;
 }

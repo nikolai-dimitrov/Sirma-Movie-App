@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect } from 'react'
 
-import { useForm } from "../../../hooks/useForm"
+import { useForm } from '../../../hooks/useForm'
+import { Input } from '../../input/Input'
 
 import { IoMdAdd } from 'react-icons/io'
 import { GiSaveArrow } from 'react-icons/gi'
@@ -30,23 +31,23 @@ export const MovieForm = ({ movie, submitHandler, finishUpdate, isUpdating }) =>
         <form className={styles.movieForm} action="" onSubmit={(e) => onFormSubmitHandler(e, movie.ID)}>
             <div className={styles.inputWrapper}>
                 <label htmlFor="Title">Movie Name</label>
-                <input
-                    type='text'
-                    id='Title'
-                    name='Title'
-                    onChange={onChangeHandler}
-                    value={formValues['Title']}
+                <Input
+                    type={"text"}
+                    id={"Title"}
+                    name={"Title"}
+                    onChangeHandler={onChangeHandler}
+                    value={formValues["Title"]}
                 />
 
             </div>
             <div className={styles.inputWrapper}>
                 <label htmlFor="Title">Release Date</label>
-                <input
-                    type='date'
-                    id='ReleaseDate'
-                    name='ReleaseDate'
-                    onChange={onChangeHandler}
-                    value={formValues['ReleaseDate']}
+                <Input
+                    type={"date"}
+                    id={"ReleaseDate"}
+                    name={"ReleaseDate"}
+                    onChangeHandler={onChangeHandler}
+                    value={formValues["ReleaseDate"]}
                 />
 
             </div>

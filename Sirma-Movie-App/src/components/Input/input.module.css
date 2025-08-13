@@ -1,0 +1,24 @@
+.input {
+	background-color: #242424;
+	border: 1px solid #3a3a3a;
+	color: #bbbbbb;
+	padding: 6px 9px;
+	border-radius: 8px;
+	font-size: 14px;
+	width: 100%;
+}
+
+.input:focus {
+	outline: none;
+	box-shadow: 0 0 4px #3a3a3a;
+}
+
+.input::placeholder {
+	color: #bbbbbb;
+}
+
+
+.input[type="date"] {
+	padding: 5px 5px;
+	padding-left: 10px;
+}

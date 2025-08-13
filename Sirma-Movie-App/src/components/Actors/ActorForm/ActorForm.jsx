@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 
-import { useForm } from "../../../hooks/useForm"
+import { useForm } from '../../../hooks/useForm'
+import { Input } from '../../Input/Input'
 
 import { IoMdAdd } from 'react-icons/io'
 import { GiSaveArrow } from 'react-icons/gi'
@@ -30,22 +31,22 @@ export const ActorForm = ({ actor, submitHandler, finishUpdate, isUpdating }) =>
     return (
         <form className={styles.actorForm} action="" onSubmit={(e) => onFormSubmitHandler(e, actor.ID)}>
             <div className={styles.inputWrapper}>
-                <label htmlFor="Title">Name</label>
-                <input
-                    id='FullName'
-                    name='FullName'
-                    onChange={onChangeHandler}
-                    value={formValues['FullName']}
+                <label htmlFor="FullName">Name</label>
+                <Input
+                    id={"FullName"}
+                    name={"FullName"}
+                    onChangeHandler={onChangeHandler}
+                    value={formValues["FullName"]}
                 />
             </div>
             <div className={styles.inputWrapper}>
-                <label htmlFor="Title">Birth Date</label>
-                <input
-                    type='date'
-                    id='BirthDate'
-                    name='BirthDate'
-                    onChange={onChangeHandler}
-                    value={formValues['BirthDate']}
+                <label htmlFor="BirthDate">Birth Date</label>
+                <Input
+                    type={"date"}
+                    id={"BirthDate"}
+                    name={"BirthDate"}
+                    onChangeHandler={onChangeHandler}
+                    value={formValues["BirthDate"]}
                 />
             </div>
             <button>{isUpdating ? <GiSaveArrow /> : <IoMdAdd />}</button>

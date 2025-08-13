@@ -2,6 +2,7 @@ import { useState, useContext, useMemo } from 'react'
 
 import { MovieContext } from '../../contexts/MovieContext'
 import { MovieForm } from './MovieForm/MovieForm'
+import { Input } from '../Input/Input'
 import { useDebouncedSearch } from '../../hooks/useDebouncedSearch'
 
 import { FaEdit } from 'react-icons/fa'
@@ -60,14 +61,17 @@ export const Movies = () => {
     return (
         <section className={styles.movies}>
             <MovieForm movie={movie} submitHandler={isUpdating ? updateMovieHandler : addMovieHandler} finishUpdate={finishUpdate} isUpdating={isUpdating} />
-            <input
-                type="text"
-                id='SearchParam'
-                name='SearchParam'
-                placeholder='Search Movie Title'
-                onChange={onChangeHandler}
-                value={searchParam}
-            />
+            <div className={styles.searchInputWrapper}>
+                <Input
+                    type={"text"}
+                    id={"SearchParam"}
+                    name={"SearchParam"}
+                    placeholder={"Search Movie Title"}
+                    onChangeHandler={onChangeHandler}
+                    value={searchParam}
+                />
+            </div>
+
             <ul className={styles.moviesList}>
                 {filteredMovies?.map(currentMovie => (
                     <li key={currentMovie.ID} className={styles.movieItem}>

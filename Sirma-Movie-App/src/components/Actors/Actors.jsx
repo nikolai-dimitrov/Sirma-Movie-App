@@ -2,6 +2,7 @@ import { useState, useContext, useMemo } from 'react'
 
 import { MovieContext } from '../../contexts/MovieContext';
 import { ActorForm } from './ActorForm/ActorForm';
+import { Input } from '../input/Input';
 import { useDebouncedSearch } from '../../hooks/useDebouncedSearch';
 
 import { FaEdit } from 'react-icons/fa'
@@ -61,14 +62,16 @@ export const Actors = () => {
     return (
         <section className={styles.actors}>
             <ActorForm actor={actor} submitHandler={isUpdating ? updateActorHandler : addActorHandler} finishUpdate={finishUpdate} isUpdating={isUpdating} />
-            <input
-                type="text"
-                id='SearchParam'
-                name='SearchParam'
-                placeholder='Search Actors'
-                onChange={onChangeHandler}
-                value={searchParam}
-            />
+            <div className={styles.searchInputWrapper}>
+                <Input
+                    type="text"
+                    id={"SearchInput"}
+                    name={"SearchParam"}
+                    placeholder={'Search Actors'}
+                    onChangeHandler={onChangeHandler}
+                    value={searchParam}
+                />
+            </div>
             <ul className={styles.actorsList}>
                 {filteredActors?.map(currentActor => (
                     <li key={currentActor.ID} className={styles.actorItem}>
