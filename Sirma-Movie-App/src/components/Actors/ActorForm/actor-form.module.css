@@ -3,7 +3,7 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin-bottom: 10px;
+	margin-bottom: 23px;
 }
 
 .inputWrapper {
@@ -25,10 +25,17 @@
 	font-size: 15px;
 }
 
-
 .actorForm button {
 	background-color: transparent;
 	border: unset;
 	color: green;
 	cursor: pointer;
+}
+
+.formError {
+	color: #c70000;
+	position: absolute;
+	font-size: 14px;
+	left: 5px;
+	top: 33px;
 }

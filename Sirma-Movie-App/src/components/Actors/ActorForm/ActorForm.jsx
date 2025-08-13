@@ -13,7 +13,7 @@ export const ActorForm = ({ actor, submitHandler, finishUpdate, isUpdating }) =>
         'FullName': '',
         'BirthDate': ''
     });
-    const { formValues, onChangeHandler, onSubmitHandler } = useForm(initialFormValues, submitHandler);
+    const { formValues, formErrors, onChangeHandler, onSubmitHandler } = useForm(initialFormValues, submitHandler);
 
     useEffect(() => {
         setInitialFormValues({
@@ -38,7 +38,9 @@ export const ActorForm = ({ actor, submitHandler, finishUpdate, isUpdating }) =>
                     onChangeHandler={onChangeHandler}
                     value={formValues["FullName"]}
                 />
+                {formErrors['FullName'] && <p className={styles.formError}>{formErrors['FullName']}</p>}
             </div>
+
             <div className={styles.inputWrapper}>
                 <label htmlFor="BirthDate">Birth Date</label>
                 <Input
@@ -48,6 +50,8 @@ export const ActorForm = ({ actor, submitHandler, finishUpdate, isUpdating }) =>
                     onChangeHandler={onChangeHandler}
                     value={formValues["BirthDate"]}
                 />
+                {formErrors['BirthDate'] && <p className={styles.formError}>{formErrors['BirthDate']}</p>}
+
             </div>
             <button>{isUpdating ? <GiSaveArrow /> : <IoMdAdd />}</button>
         </form>
