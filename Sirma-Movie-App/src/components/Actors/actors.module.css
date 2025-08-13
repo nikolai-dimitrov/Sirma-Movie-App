@@ -82,6 +82,44 @@
 .detailsContainer h4 {
 	color: var(--primary-color);
 }
+.detailsHeadingContainer {
+	display: flex;
+	width: 75%;
+}
+
+.detailsHeadingContainer h4:first-child {
+	width: 53%;
+}
+
+.detailsHeadingContainer h4:last-child {
+	width: 40%;
+}
+
+.roleItemContainer {
+	display: flex;
+	width: 90%;
+}
+
+.roleItemContainer .buttonContainer {
+	width: 25%;
+}
+
+.roleItem {
+	display: flex;
+	width: 75%;
+	justify-content: space-between;
+
+}
+
+.movieTitle {
+	width: 60%;
+    overflow: auto;
+}
+
+.roleName {
+	width: 40%;
+	overflow: auto;
+}
 
 .detailsContainer p {
 	margin: 0 0 2px 7px;

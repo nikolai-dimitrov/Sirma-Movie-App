@@ -78,24 +78,24 @@ export const MovieProvider = ({ children }) => {
         setData((prevState) => ({
             ...prevState,
             movies: [...prevState.movies, movie]
-        }))
+        }));
 
     };
 
-    const updateMovieHandler = (updatedMovie, movieId) => {
+    const updateMovieHandler = (newData, movieId) => {
         setData((prevState) => ({
             ...prevState,
-            movies: prevState.movies.map((currentMovie) => currentMovie.ID == movieId ? { ...currentMovie, ...updatedMovie } : currentMovie)
-        }))
-    }
+            movies: prevState.movies.map((currentMovie) => currentMovie.ID == movieId ? { ...currentMovie, ...newData } : currentMovie)
+        }));
+    };
 
     const deleteMovieHandler = (movieId) => {
         setData((prevState) => ({
             ...prevState,
             movies: prevState.movies.filter((currentMovie) => currentMovie.ID != movieId),
             roles: prevState.roles.filter((currentRole) => currentRole.MovieID != movieId),
-        }))
-    }
+        }));
+    };
 
     const addActorHandler = (formValues) => {
         const highestId = Math.max(...data.actors.map((currentActor) => currentActor.ID))
@@ -109,24 +109,41 @@ export const MovieProvider = ({ children }) => {
         setData((prevState) => ({
             ...prevState,
             actors: [...prevState.actors, actor]
-        }))
+        }));
 
     };
 
-    const updateActorHandler = (updatedActor, actorId) => {
+    const updateActorHandler = (newData, actorId) => {
         setData((prevState) => ({
             ...prevState,
-            actors: prevState.actors.map((currentActor) => currentActor.ID == actorId ? { ...currentActor, ...updatedActor } : currentActor)
-        }))
-    }
+            actors: prevState.actors.map((currentActor) => currentActor.ID == actorId ? { ...currentActor, ...newData } : currentActor)
+        }));
+    };
 
     const deleteActorHandler = (actorId) => {
         setData((prevState) => ({
             ...prevState,
             actors: prevState.actors.filter((currentActor) => currentActor.ID != actorId),
             roles: prevState.roles.filter((currentRole) => currentRole.ActorID != actorId),
-        }))
-    }
+        }));
+    };
+
+    const addRoleHandler = (formValues) => { };
+
+    const updateRoleHandler = (newData, roleId) => {
+        setData((prevState) => ({
+            ...prevState,
+            roles: prevState.roles.map((currentRole) => currentRole.ID == roleId ? { ...currentRole, ...newData } : currentRole),
+        }));
+    };
+
+    const deleteRoleHandler = (roleId) => {
+        setData((prevState) => ({
+            ...prevState,
+            roles: prevState.roles.filter((currentRole) => currentRole.ID != roleId),
+        }));
+    };
+
 
     const values = {
         data,
@@ -139,6 +156,9 @@ export const MovieProvider = ({ children }) => {
         addActorHandler,
         updateActorHandler,
         deleteActorHandler,
+        addRoleHandler,
+        updateRoleHandler,
+        deleteRoleHandler,
 
     }
 
