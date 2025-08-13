@@ -12,7 +12,7 @@ export const MovieForm = ({ movie, submitHandler, finishUpdate, isUpdating }) =>
         'Title': "",
         'ReleaseDate': ""
     });
-    const { formValues,formErrors, onChangeHandler, onSubmitHandler } = useForm(initialFormValues, submitHandler);
+    const { formValues, formErrors, onChangeHandler, onSubmitHandler } = useForm(initialFormValues, submitHandler);
 
     useEffect(() => {
         setInitialFormValues({
@@ -26,7 +26,7 @@ export const MovieForm = ({ movie, submitHandler, finishUpdate, isUpdating }) =>
         onSubmitHandler(e, movieId);
         finishUpdate();
     };
-
+    console.log(serverError)
     return (
         <form className={styles.movieForm} action="" onSubmit={(e) => onFormSubmitHandler(e, movie.ID)}>
             <div className={styles.inputWrapper}>
@@ -51,7 +51,6 @@ export const MovieForm = ({ movie, submitHandler, finishUpdate, isUpdating }) =>
                     value={formValues["ReleaseDate"]}
                 />
                 {formErrors['ReleaseDate'] && <p className={styles.formError}>{formErrors['ReleaseDate']}</p>}
-
             </div>
             <button>{isUpdating ? <GiSaveArrow /> : <IoMdAdd />}</button>
         </form>

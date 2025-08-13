@@ -11,7 +11,7 @@ import { MdDelete } from 'react-icons/md'
 import styles from './actors.module.css'
 
 export const Actors = () => {
-    const { actorsMappedWithRoles, addActorHandler, updateActorHandler, deleteActorHandler } = useContext(MovieContext);
+    const { actorsMappedWithRoles, addActorHandler, updateActorHandler, deleteActorHandler, serverError } = useContext(MovieContext);
 
     const [searchParam, setSearchParam] = useState('');
     const debouncedSearchParam = useDebouncedSearch(searchParam);
@@ -62,6 +62,7 @@ export const Actors = () => {
     return (
         <section className={styles.actors}>
             <ActorForm actor={actor} submitHandler={isUpdating ? updateActorHandler : addActorHandler} finishUpdate={finishUpdate} isUpdating={isUpdating} />
+            {serverError && <p className={styles.serverError}>{serverError}</p>}
             <div className={styles.searchInputWrapper}>
                 <Input
                     type="text"

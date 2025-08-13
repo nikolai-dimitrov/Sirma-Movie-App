@@ -16,6 +16,8 @@ export const MovieProvider = ({ children }) => {
     const [moviesMappedWithRoles, setMoviesMappedWithRoles] = useState([]);
     const [actorsMappedWithRoles, setActorsMappedWithRoles] = useState([]);
 
+    const [serverError, setServerError] = useState(null);
+
     useEffect(() => {
         const getCsvData = async () => {
             try {
@@ -53,20 +55,6 @@ export const MovieProvider = ({ children }) => {
 
     }, [data])
 
-    const addRole = () => {
-        const role = {
-            'ID': 52,
-            'ActorID': 50,
-            'MovieID': 50,
-            'RoleName': 'NewRole SEEDED',
-        }
-
-        setData((prevState) => ({
-            ...prevState,
-            roles: [...prevState.roles, role]
-        }))
-    }
-
     const addMovieHandler = (formValues) => {
         const highestId = Math.max(...data.movies.map((currentMovie) => currentMovie.ID))
         const movie = {
@@ -75,10 +63,18 @@ export const MovieProvider = ({ children }) => {
             roles: [],
         };
 
+        let isMovieExists = data.movies.find((currentMovie) => currentMovie.Title == formValues.Title);
+        if (isMovieExists) {
+            setServerError('This movie title already exists!');
+            return
+        }
+
         setData((prevState) => ({
             ...prevState,
             movies: [...prevState.movies, movie]
         }))
+
+        setServerError(null);
 
     };
 
@@ -106,10 +102,19 @@ export const MovieProvider = ({ children }) => {
             roles: [],
         };
 
+        let isActorExists = data.actors.find((currentActor) => currentActor.FullName == formValues.FullName)
+        
+        if (isActorExists) {
+            setServerError('This actor already exists!');
+            return;
+        }
+
         setData((prevState) => ({
             ...prevState,
             actors: [...prevState.actors, actor]
         }))
+
+        setServerError(null);
 
     };
 
@@ -130,9 +135,9 @@ export const MovieProvider = ({ children }) => {
 
     const values = {
         data,
+        serverError,
         moviesMappedWithRoles,
         actorsMappedWithRoles,
-        addRole,
         addMovieHandler,
         updateMovieHandler,
         deleteMovieHandler,

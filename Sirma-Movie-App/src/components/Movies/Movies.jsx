@@ -11,7 +11,7 @@ import { MdDelete } from 'react-icons/md'
 import styles from './movies.module.css'
 
 export const Movies = () => {
-    const { moviesMappedWithRoles, addMovieHandler, updateMovieHandler, deleteMovieHandler } = useContext(MovieContext);
+    const { moviesMappedWithRoles, addMovieHandler, updateMovieHandler, deleteMovieHandler, serverError } = useContext(MovieContext);
     const [movie, setMovie] = useState({});
     const [searchParam, setSearchParam] = useState('');
     const debouncedSearchParam = useDebouncedSearch(searchParam);
@@ -61,6 +61,7 @@ export const Movies = () => {
     return (
         <section className={styles.movies}>
             <MovieForm movie={movie} submitHandler={isUpdating ? updateMovieHandler : addMovieHandler} finishUpdate={finishUpdate} isUpdating={isUpdating} />
+            {serverError && <p className={styles.serverError}>{serverError}</p>}
             <div className={styles.searchInputWrapper}>
                 <Input
                     type={"text"}
@@ -71,7 +72,6 @@ export const Movies = () => {
                     value={searchParam}
                 />
             </div>
-
             <ul className={styles.moviesList}>
                 {filteredMovies?.map(currentMovie => (
                     <li key={currentMovie.ID} className={styles.movieItem}>

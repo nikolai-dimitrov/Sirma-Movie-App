@@ -3,6 +3,11 @@
 	width: 355px;
 }
 
+.serverError {
+	margin-bottom: 10px;
+	color: #c70000;
+}
+
 .searchInputWrapper {
 	margin-bottom: 25px;
 }
