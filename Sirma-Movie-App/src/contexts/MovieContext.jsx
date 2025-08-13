@@ -53,20 +53,6 @@ export const MovieProvider = ({ children }) => {
 
     }, [data])
 
-    const addRole = () => {
-        const role = {
-            'ID': 52,
-            'ActorID': 50,
-            'MovieID': 50,
-            'RoleName': 'NewRole SEEDED',
-        }
-
-        setData((prevState) => ({
-            ...prevState,
-            roles: [...prevState.roles, role]
-        }))
-    }
-
     const addMovieHandler = (formValues) => {
         const highestId = Math.max(...data.movies.map((currentMovie) => currentMovie.ID))
         const movie = {
@@ -128,9 +114,23 @@ export const MovieProvider = ({ children }) => {
         }));
     };
 
-    const addRoleHandler = (formValues) => { };
+    const addRoleHandler = (formValues) => {
+        const highestId = Math.max(...data.roles.map((currentRole) => currentRole.ID))
+        console.log('crete')
+        const role = {
+            'ID': highestId + 1,
+            ...formValues,
+        }
+
+        setData((prevState) => ({
+            ...prevState,
+            roles: [...prevState.roles, role]
+        }))
+
+    };
 
     const updateRoleHandler = (newData, roleId) => {
+        console.log(newData)
         setData((prevState) => ({
             ...prevState,
             roles: prevState.roles.map((currentRole) => currentRole.ID == roleId ? { ...currentRole, ...newData } : currentRole),
@@ -149,7 +149,6 @@ export const MovieProvider = ({ children }) => {
         data,
         moviesMappedWithRoles,
         actorsMappedWithRoles,
-        addRole,
         addMovieHandler,
         updateMovieHandler,
         deleteMovieHandler,
