@@ -130,7 +130,7 @@ export const MovieProvider = ({ children }) => {
     };
 
     const updateRoleHandler = (newData, roleId) => {
-        console.log(newData)
+        console.log(newData,'update handler')
         setData((prevState) => ({
             ...prevState,
             roles: prevState.roles.map((currentRole) => currentRole.ID == roleId ? { ...currentRole, ...newData } : currentRole),

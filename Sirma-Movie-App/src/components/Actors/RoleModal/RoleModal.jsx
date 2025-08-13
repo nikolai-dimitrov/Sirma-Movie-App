@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { useForm } from '../../../hooks/useForm'
 
 import styles from './role-modal.module.css'
-export const RoleModal = ({ role, actorsMappedWithRoles, moviesMappedWithRoles, submitHandler, finishUpdate, isUpdating, closeRoleModal }) => {
+export const RoleModal = ({ role, actorsMappedWithRoles, moviesMappedWithRoles, submitHandler, isUpdating, closeRoleModal }) => {
     const [initialFormValues, setInitialFormValues] = useState({
         'RoleName': '',
         'MovieID': '',
@@ -21,7 +21,7 @@ export const RoleModal = ({ role, actorsMappedWithRoles, moviesMappedWithRoles, 
     }, [role]);
 
     const onFormSubmitHandler = (e, roleId) => {
-        onSubmitHandler(e, role.ID);
+        onSubmitHandler(e, roleId);
         closeRoleModal();
     }
 
@@ -37,7 +37,6 @@ export const RoleModal = ({ role, actorsMappedWithRoles, moviesMappedWithRoles, 
         return filteredMovies;
     }, [formValues['ActorID']]);
 
-    console.log(isUpdating,role.ID)
     return (
         <>
             <form action="" onSubmit={(e) => onFormSubmitHandler(e, role.ID)}>

@@ -97,7 +97,7 @@ export const Actors = () => {
                     value={searchParam}
                 />
             </div>
-            {isRoleModalOpen && <RoleModal role={role} actorsMappedWithRoles={actorsMappedWithRoles} moviesMappedWithRoles={moviesMappedWithRoles} submitHandler={isActorUpdating ? updateRoleHandler : addRoleHandler} isUpdating={isRoleUpdating} closeRoleModal={closeRoleModal} />}
+            {isRoleModalOpen && <RoleModal role={role} actorsMappedWithRoles={actorsMappedWithRoles} moviesMappedWithRoles={moviesMappedWithRoles} submitHandler={isRoleUpdating ? updateRoleHandler : addRoleHandler} isUpdating={isRoleUpdating} closeRoleModal={closeRoleModal} />}
             <button onClick={createRoleClickHandler}>Create Role</button>
             <ul className={styles.actorsList}>
                 {filteredActors?.map(currentActor => (
@@ -124,7 +124,7 @@ export const Actors = () => {
                                         {currentActor.roles.map((currentRole, index) => (
                                             <div key={currentRole.ID} className={styles.roleItemContainer}>
                                                 <div className={styles.roleItem}>
-                                                    <p className={styles.movieTitle} key={index}>{currentRole.MovieDetails.Title}</p>
+                                                    <p className={styles.movieTitle} key={index}>{currentRole.MovieDetails?.Title}</p>
                                                     <p className={styles.roleName}>{currentRole.RoleName == 'null' ? 'Unnamed' : currentRole.RoleName}</p>
                                                 </div>
                                                 <div className={styles.buttonsContainer}>
