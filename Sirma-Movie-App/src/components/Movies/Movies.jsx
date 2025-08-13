@@ -1,4 +1,4 @@
-import { useState, useContext, useMemo } from 'react'
+import { useState, useEffect, useContext, useMemo } from 'react'
 
 import { MovieContext } from '../../contexts/MovieContext'
 import { MovieForm } from './MovieForm/MovieForm'
@@ -11,12 +11,16 @@ import { MdDelete } from 'react-icons/md'
 import styles from './movies.module.css'
 
 export const Movies = () => {
-    const { moviesMappedWithRoles, addMovieHandler, updateMovieHandler, deleteMovieHandler, serverError } = useContext(MovieContext);
+    const { moviesMappedWithRoles, addMovieHandler, updateMovieHandler, deleteMovieHandler, serverError, clearServerErrors } = useContext(MovieContext);
     const [movie, setMovie] = useState({});
     const [searchParam, setSearchParam] = useState('');
     const debouncedSearchParam = useDebouncedSearch(searchParam);
     const [isUpdating, setIsUpdating] = useState(false);
     const [toggledMovieDetailsId, setToggledMovieDetailsId] = useState(null);
+
+    useEffect(() => {
+        clearServerErrors();
+    }, []);
 
     const filteredMovies = useMemo(() => moviesMappedWithRoles.filter((currentMovie) => {
         return currentMovie.Title.toLowerCase().includes(debouncedSearchParam.toLowerCase());

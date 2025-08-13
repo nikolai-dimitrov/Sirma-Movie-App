@@ -55,6 +55,10 @@ export const MovieProvider = ({ children }) => {
 
     }, [data])
 
+    const clearServerErrors = () => {
+        setServerError(null);
+    }
+
     const addMovieHandler = (formValues) => {
         const highestId = Math.max(...data.movies.map((currentMovie) => currentMovie.ID))
         const movie = {
@@ -74,7 +78,7 @@ export const MovieProvider = ({ children }) => {
             movies: [...prevState.movies, movie]
         }))
 
-        setServerError(null);
+        clearServerErrors();
 
     };
 
@@ -114,7 +118,7 @@ export const MovieProvider = ({ children }) => {
             actors: [...prevState.actors, actor]
         }))
 
-        setServerError(null);
+        clearServerErrors();
 
     };
 
@@ -136,6 +140,7 @@ export const MovieProvider = ({ children }) => {
     const values = {
         data,
         serverError,
+        clearServerErrors,
         moviesMappedWithRoles,
         actorsMappedWithRoles,
         addMovieHandler,

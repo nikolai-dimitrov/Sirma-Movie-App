@@ -26,7 +26,7 @@ export const MovieForm = ({ movie, submitHandler, finishUpdate, isUpdating }) =>
         onSubmitHandler(e, movieId);
         finishUpdate();
     };
-    console.log(serverError)
+
     return (
         <form className={styles.movieForm} action="" onSubmit={(e) => onFormSubmitHandler(e, movie.ID)}>
             <div className={styles.inputWrapper}>

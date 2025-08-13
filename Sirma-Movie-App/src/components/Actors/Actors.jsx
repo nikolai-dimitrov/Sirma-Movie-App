@@ -1,4 +1,4 @@
-import { useState, useContext, useMemo } from 'react'
+import { useState, useEffect, useContext, useMemo } from 'react'
 
 import { MovieContext } from '../../contexts/MovieContext';
 import { ActorForm } from './ActorForm/ActorForm';
@@ -11,7 +11,7 @@ import { MdDelete } from 'react-icons/md'
 import styles from './actors.module.css'
 
 export const Actors = () => {
-    const { actorsMappedWithRoles, addActorHandler, updateActorHandler, deleteActorHandler, serverError } = useContext(MovieContext);
+    const { actorsMappedWithRoles, addActorHandler, updateActorHandler, deleteActorHandler, serverError, clearServerErrors } = useContext(MovieContext);
 
     const [searchParam, setSearchParam] = useState('');
     const debouncedSearchParam = useDebouncedSearch(searchParam);
@@ -21,6 +21,10 @@ export const Actors = () => {
 
     const [actor, setActor] = useState({});
     const [isUpdating, setIsUpdating] = useState(false);
+
+    useEffect(() => {
+        clearServerErrors();
+    }, []);
 
     const filteredActors = useMemo(() => actorsMappedWithRoles.filter((currentActor) => {
         return currentActor.FullName.toLowerCase().includes(debouncedSearchParam.toLowerCase());
