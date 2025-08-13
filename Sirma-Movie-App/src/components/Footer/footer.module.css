@@ -1,21 +1,37 @@
 .footerContent {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1600px;
-    margin: 0 auto;
-    padding: 15px 30px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	max-width: 1600px;
+	margin: 0 auto;
+	padding: 15px 30px;
 }
 
 .heading {
-    font-size: 26px;
-    font-weight: 600;
-    color: var(--primary-color);
+	font-size: 26px;
+	font-weight: 600;
+	color: var(--primary-color);
 }
 
 .gitHub {
-    display: flex;
-    gap: 10px;
-    font-size: 17px;
-    color: var(--primary-color);
+	display: flex;
+	gap: 10px;
+	font-size: 17px;
+	color: var(--primary-color);
+}
+
+@media screen and (max-width: 393px) {
+	.heading {
+		font-size: 20px;
+	}
+
+	.gitHub {
+		font-size: 14px;
+	}
+}
+
+@media screen and (max-width: 340px) {
+	.footerContent {
+		padding: 15px 15px;
+	}
 }

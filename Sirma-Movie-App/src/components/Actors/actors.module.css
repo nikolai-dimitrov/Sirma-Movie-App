@@ -105,3 +105,16 @@
 .hidden {
 	display: none;
 }
+
+@media screen and (max-width: 410px) {
+	.actors {
+		max-width: 300px;
+	}
+}
+
+@media screen and (max-width: 340px) {
+	.actors {
+		max-width: 275px;
+	}
+}
+

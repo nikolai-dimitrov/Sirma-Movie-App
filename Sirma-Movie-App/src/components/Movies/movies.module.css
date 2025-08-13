@@ -103,3 +103,16 @@
 .hidden {
 	display: none;
 }
+
+@media screen and (max-width: 410px) {
+	.movies {
+		max-width: 300px;
+	}
+}
+
+@media screen and (max-width: 340px) {
+	.movies {
+		max-width: 275px;
+	}
+}
+
