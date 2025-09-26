@@ -1,9 +1,12 @@
+// TODO: Implementation for single column csv files
 const parseCsv = async (filePath, delimiter = ",") => {
 	const fileData = await fetch(filePath);
 	const textFileData = await fileData.text();
 	const fileDataArray = textFileData.split("\n");
 	const [firstLine, ...restLines] = fileDataArray;
 
+	validateDelimiter(fileDataArray, delimiter);
+	
 	// trim because of \r last element
 	const headerRow = firstLine.trim().split(delimiter);
 	const dataRows = restLines;
@@ -54,6 +57,20 @@ const formatDate = (dateString) => {
 	}
 
 	return date.toISOString().split("T")[0];
+};
+
+const validateDelimiter = (csvDataArray, delimiter) => {
+	const partialData = csvDataArray
+		.splice(0, 10)
+		.map((line) => line.trim())
+		.filter((el) => el != "");
+	const hasDelimiter = partialData.every((row) => row.includes(delimiter));
+
+	if (!hasDelimiter) {
+		throw new Error(
+			`Chosen delimiter - "${delimiter}" does not occur on every row in csv file.`
+		);
+	}
 };
 
 export const csvFileProcessor = {
