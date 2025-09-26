@@ -93,8 +93,8 @@ export const Actors = () => {
                         <div className={styles.detailsContainer}>
                             <div className={toggledMovieDetailsId == currentActor.ID ? `` : `${styles.hidden}`}>
                                 <p >Birth Date: {currentActor.BirthDate}</p>
-                                {currentActor.roles.length > 0 && <h4>Movies and Roles:</h4>}
-                                {currentActor.roles.map((currentRole, index) => (
+                                {currentActor.roles?.length > 0 && <h4>Movies and Roles:</h4>}
+                                {currentActor.roles?.map((currentRole, index) => (
                                     <p className={styles.movieDetails} key={index}>{currentRole.MovieDetails.Title} - {currentRole.RoleName == 'NULL' ? 'Unnamed' : currentRole.RoleName}</p>
                                 ))}
                             </div>

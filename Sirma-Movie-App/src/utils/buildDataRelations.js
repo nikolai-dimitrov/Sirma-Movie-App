@@ -15,20 +15,25 @@ export const buildMoviesRelations = (movies, allRoles) => {
 		allMovies.push({ ...currentMovie, roles: rolesByMovieId[movieId] });
 	});
 
-
 	return allMovies;
 };
 
 export const buildActorsRelations = (actors, allRoles) => {
 	const allActors = [];
+	const rolesByActorId = {};
+
+	allRoles.forEach((currentRole) => {
+		if (!rolesByActorId[currentRole.ActorID]) {
+			rolesByActorId[currentRole.ActorID] = [];
+		}
+
+		rolesByActorId[currentRole.ActorID].push(currentRole);
+	});
 
 	actors.forEach((currentActor) => {
 		const actorId = currentActor.ID;
-		const filteredRoles = allRoles.filter(
-			(currentRole) => currentRole.ActorID == actorId
-		);
 
-		allActors.push({ ...currentActor, roles: filteredRoles });
+		allActors.push({ ...currentActor, roles: rolesByActorId[actorId] });
 	});
 
 	return allActors;
