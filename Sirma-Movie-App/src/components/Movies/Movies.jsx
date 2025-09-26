@@ -52,6 +52,7 @@ export const Movies = () => {
 
     const toggleMovieDetails = (currentMovie) => {
         setToggledMovieDetailsId(currentMovie.ID);
+
         if (currentMovie.ID == toggledMovieDetailsId) {
             setToggledMovieDetailsId(null);
         }
@@ -59,8 +60,8 @@ export const Movies = () => {
 
     const onChangeHandler = (e) => {
         setSearchParam(e.target.value);
-    }
 
+    }
 
     return (
         <section className={styles.movies}>
@@ -92,8 +93,8 @@ export const Movies = () => {
                         <div className={styles.detailsContainer}>
                             <div className={toggledMovieDetailsId == currentMovie.ID ? `` : `${styles.hidden}`}>
                                 <p>Release Date: {currentMovie.ReleaseDate}</p>
-                                {currentMovie.roles.length > 0 && <h4>Actors and Roles:</h4>}
-                                {currentMovie.roles.map((currentRole, index) => (
+                                {currentMovie.roles?.length > 0 && <h4>Actors and Roles:</h4>}
+                                {currentMovie.roles?.map((currentRole, index) => (
                                     <p className={styles.actorDetails} key={index}>{currentRole.ActorDetails?.FullName} - {currentRole.RoleName == 'NULL' ? 'Unnamed' : currentRole.RoleName}</p>
                                 ))}
                             </div>
