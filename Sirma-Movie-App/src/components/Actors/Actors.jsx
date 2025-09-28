@@ -36,11 +36,11 @@ export const Actors = () => {
     }
 
     const updateClickHandler = (currentActor) => {
-        setActor(currentActor);
-        setIsUpdating(true);
-
         if (actor == currentActor) {
             finishUpdate();
+        } else {
+            setActor(currentActor);
+            setIsUpdating(true);
         }
     }
 
@@ -52,10 +52,11 @@ export const Actors = () => {
         deleteActorHandler(actorId);
     }
 
-    const toggleMovieDetails = (currentMovie) => {
-        setToggledMovieDetailsId(currentMovie.ID);
+    const toggleActorDetails = (currentMovie) => {
         if (currentMovie.ID == toggledMovieDetailsId) {
             setToggledMovieDetailsId(null);
+        } else {
+            setToggledMovieDetailsId(currentMovie.ID);
         }
     }
 
@@ -82,7 +83,7 @@ export const Actors = () => {
                     <li key={currentActor.ID} className={styles.actorItem}>
                         <div className={styles.actorSummary}>
                             <div className={styles.titleContainer}>
-                                <p onClick={() => toggleMovieDetails(currentActor)} className={styles.title}>{currentActor.FullName}</p>
+                                <p onClick={() => toggleActorDetails(currentActor)} className={styles.title}>{currentActor.FullName}</p>
                             </div>
                             <div className={styles.buttonsContainer}>
                                 <button className={styles.updateBtn} onClick={() => updateClickHandler(currentActor)}><FaEdit /></button>

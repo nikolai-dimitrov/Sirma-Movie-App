@@ -34,11 +34,12 @@ export const Movies = () => {
 
 
     const updateClickHandler = (currentMovie) => {
-        setMovie(currentMovie);
-        setIsUpdating(true);
 
         if (movie == currentMovie) {
             finishUpdate();
+        } else {
+            setMovie(currentMovie);
+            setIsUpdating(true);
         }
     }
 
@@ -51,10 +52,10 @@ export const Movies = () => {
     }
 
     const toggleMovieDetails = (currentMovie) => {
-        setToggledMovieDetailsId(currentMovie.ID);
-
         if (currentMovie.ID == toggledMovieDetailsId) {
             setToggledMovieDetailsId(null);
+        } else {
+            setToggledMovieDetailsId(currentMovie.ID);
         }
     }
 
