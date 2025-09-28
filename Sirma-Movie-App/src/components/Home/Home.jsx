@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import { MovieContext } from '../../contexts/MovieContext';
 
-import { getTopActorPair } from '../../utils//actorsPairMoviesMapper';
+import { getTopActorPair } from '../../utils/getTopActorPair';
 
 import styles from './home.module.css'
 export const Home = () => {
@@ -13,11 +13,8 @@ export const Home = () => {
         setTopActorPair(actorPair);
     }, [moviesMappedWithRoles]);
 
-    const [actorIdPair, moviesPlayed] = topActorPair;
-    const [firstActorId, secondActorId] = actorIdPair?.split("-") || [];
+    const [firstActorId, secondActorId] = topActorPair.actorPairId?.split("-") || [];
     const [firstActor, secondActor] = data.actors.filter((el) => (el.ID == firstActorId || el.ID == secondActorId));
-
-    const sharedMoviesCount = moviesPlayed?.length;
 
     return (
         <section className={styles.home}>
@@ -31,7 +28,7 @@ export const Home = () => {
                 </div>
                 <ul className={styles.moviesInformationContainer}>
                     <h4>Shared Movies List:</h4>
-                    {moviesPlayed?.map((currentMovie) => (
+                    {topActorPair.movies?.map((currentMovie) => (
                         <li key={currentMovie.ID}>
                             <p>
                                 {currentMovie.Title}
@@ -41,7 +38,7 @@ export const Home = () => {
                 </ul>
                 <div className={styles.moviesCountContainer}>
                     <h4>Shared Movies Count: </h4>
-                    <p>{sharedMoviesCount}</p>
+                    <p>{topActorPair.moviesPlayedCount}</p>
                 </div>
             </article>
         </section>

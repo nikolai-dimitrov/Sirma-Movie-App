@@ -3,7 +3,7 @@ import { useState, useEffect, createContext } from 'react'
 import { csvFileProcessor } from '../services/csvFileProcessor'
 import { buildActorsRelations, buildMoviesRelations } from '../utils/buildDataRelations';
 import { seedRoleDetails } from '../utils/seedRoleDetails';
-import { getTopActorPair } from '../utils/actorsPairMoviesMapper';
+import { getTopActorPair } from '../utils/getTopActorPair';
 export const MovieContext = createContext();
 
 export const MovieProvider = ({ children }) => {
