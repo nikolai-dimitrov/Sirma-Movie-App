@@ -8,9 +8,12 @@ export const MovieContext = createContext();
 
 export const MovieProvider = ({ children }) => {
     const [data, setData] = useState({
-        movies: [],
-        actors: [],
-        roles: [],
+        moviesByIds: {},
+        allMoviesIds: [],
+        actorsByIds: {},
+        allActorsIds: [],
+        rolesByIds: {},
+        allRolesIds: [],
     })
 
     const [moviesMappedWithRoles, setMoviesMappedWithRoles] = useState([]);
@@ -21,19 +24,20 @@ export const MovieProvider = ({ children }) => {
     useEffect(() => {
         const getCsvData = async () => {
             try {
-                const [movies, actors, roles] = await Promise.all([
+                const [[moviesByIds, allMoviesIds], [actorsByIds, allActorsIds], [rolesByIds, allRolesIds]] = await Promise.all([
                     csvFileProcessor.getMovies(),
                     csvFileProcessor.getActors(),
                     csvFileProcessor.getRoles(),
                 ]);
 
-
-                setData({
-                    movies,
-                    actors,
-                    roles
-                });
-
+                setData((prevState) => ({
+                    moviesByIds,
+                    allMoviesIds,
+                    actorsByIds,
+                    allActorsIds,
+                    rolesByIds,
+                    allRolesIds
+                }))
 
             } catch (error) {
                 console.log(error)
@@ -44,13 +48,14 @@ export const MovieProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        const seededRoles = seedRoleDetails(data)
+        console.log(data, 'data')
+        // const seededRoles = seedRoleDetails(data)
 
-        const moviesAndRoles = buildMoviesRelations(data.movies, seededRoles);
-        const actorsAndRoles = buildActorsRelations(data.actors, seededRoles)
+        // const moviesAndRoles = buildMoviesRelations(data.movies, seededRoles);
+        // const actorsAndRoles = buildActorsRelations(data.actors, seededRoles)
 
-        setMoviesMappedWithRoles(moviesAndRoles);
-        setActorsMappedWithRoles(actorsAndRoles);
+        // setMoviesMappedWithRoles(moviesAndRoles);
+        // setActorsMappedWithRoles(actorsAndRoles);
 
     }, [data])
 

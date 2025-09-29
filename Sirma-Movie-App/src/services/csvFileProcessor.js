@@ -6,11 +6,12 @@ const parseCsv = async (filePath, delimiter = ",") => {
 	const [firstLine, ...restLines] = fileDataArray;
 
 	validateDelimiter(fileDataArray, delimiter);
-	
+
 	// trim because of \r last element
 	const headerRow = firstLine.trim().split(delimiter);
 	const dataRows = restLines;
-	const parsedData = [];
+	const parsedDataById = {};
+	const parsedDataIds = [];
 
 	dataRows.forEach((currentRow, index) => {
 		// trim because of \r last element
@@ -39,15 +40,19 @@ const parseCsv = async (filePath, delimiter = ",") => {
 			const key = headerRow[index];
 			rowData[key] = currentRowElement;
 
+			if (key == "ID") {
+				parsedDataIds.push(currentRowElement);
+			}
+
 			if (index == currentRowArray.length - 1) {
 				rowData[key] = formatDate(currentRowElement);
 			}
 		});
 
-		parsedData.push(rowData);
+		parsedDataById[rowData["ID"]] = rowData;
 	});
 
-	return parsedData;
+	return [parsedDataById, parsedDataIds];
 };
 
 const formatDate = (dateString) => {
