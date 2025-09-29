@@ -6,41 +6,44 @@ import { getTopActorPair } from '../../utils/getTopActorPair';
 import styles from './home.module.css'
 export const Home = () => {
     const { data, moviesMappedWithRoles } = useContext(MovieContext);
-    const [topActorPair, setTopActorPair] = useState([]);
+    const [topActorPairs, setTopActorPairs] = useState([]);
 
     useEffect(() => {
-        const actorPair = getTopActorPair(moviesMappedWithRoles);
-        setTopActorPair(actorPair);
+        const actorPairs = getTopActorPair(moviesMappedWithRoles);
+        setTopActorPairs(actorPairs);
     }, [moviesMappedWithRoles]);
 
-    const [firstActorId, secondActorId] = topActorPair.actorPairId?.split("-") || [];
-    const [firstActor, secondActor] = data.actors.filter((el) => (el.ID == firstActorId || el.ID == secondActorId));
+    // TODO: pass actorsById from context to avoid map all entities on every component mount/unmount
+    const actorsById = Object.fromEntries(data.actors.map((currentActor) => [currentActor.ID, currentActor]));
 
     return (
         <section className={styles.home}>
-            <article>
-                <div className={styles.actorsInformationContainer}>
-                    <h4>Top pair of actors:</h4>
-                    <div>
-                        <p>{firstActor?.FullName}</p>
-                        <p>{secondActor?.FullName}</p>
+            <h3>Top pairs of actors:</h3>
+            {topActorPairs?.map((currentActorPair) => (
+                <article key={currentActorPair.actorPairId}>
+                    <div className={styles.actorsInformationContainer}>
+                        <h4>Actors' names: </h4>
+                        <div>
+                            <p>{actorsById[currentActorPair.actorPairId.split("-")[0]].FullName}</p>
+                            <p>{actorsById[currentActorPair.actorPairId.split("-")[1]].FullName}</p>
+                        </div>
                     </div>
-                </div>
-                <ul className={styles.moviesInformationContainer}>
                     <h4>Shared Movies List:</h4>
-                    {topActorPair.movies?.map((currentMovie) => (
-                        <li key={currentMovie.ID}>
-                            <p>
-                                {currentMovie.Title}
-                            </p>
-                        </li>
-                    ))}
-                </ul>
-                <div className={styles.moviesCountContainer}>
-                    <h4>Shared Movies Count: </h4>
-                    <p>{topActorPair.moviesPlayedCount}</p>
-                </div>
-            </article>
+                    <ul className={styles.moviesInformationContainer}>
+                        {currentActorPair.movies?.map((currentMovie) => (
+                            <li key={currentMovie.ID}>
+                                <p>
+                                    {currentMovie.Title}
+                                </p>
+                            </li>
+                        ))}
+                    </ul>
+                    <div className={styles.moviesCountContainer}>
+                        <h4>Shared Movies Count: </h4>
+                        <p>{currentActorPair.sharedMoviesCount}</p>
+                    </div>
+                </article>
+            ))}
         </section>
     )
 }

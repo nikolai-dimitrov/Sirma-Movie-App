@@ -1,12 +1,10 @@
 export const getTopActorPair = (moviesAndRoles) => {
+
 	// Use mapper instead of counter to avoid later searching for the ids of the movies in which top actor pair played in
 	const sharedMovies = {};
 
-	const topActorPair = {
-		moviesPlayedCount: 0,
-		actorPairId: null,
-		movies: [],
-	};
+	let sharedMoviesCount = 0;
+	let topActorPairs = [];
 
 	for (const movie of moviesAndRoles) {
 		const roles = movie.roles;
@@ -28,18 +26,28 @@ export const getTopActorPair = (moviesAndRoles) => {
 					sharedMovies[actorsIdPair].push(movie);
 
 					if (
-						sharedMovies[actorsIdPair].length >=
-						topActorPair.moviesPlayedCount
+						sharedMovies[actorsIdPair].length == sharedMoviesCount
 					) {
-						topActorPair.moviesPlayedCount =
-							sharedMovies[actorsIdPair].length;
-						topActorPair.actorPairId = actorsIdPair;
-						topActorPair.movies = sharedMovies[actorsIdPair];
+						topActorPairs.push({
+							actorPairId: actorsIdPair,
+							movies: sharedMovies[actorsIdPair],
+							sharedMoviesCount,
+						});
+					} else if (
+						sharedMovies[actorsIdPair].length > sharedMoviesCount
+					) {
+						sharedMoviesCount = sharedMovies[actorsIdPair].length;
+						topActorPairs = [];
+						topActorPairs.push({
+							actorPairId: actorsIdPair,
+							movies: sharedMovies[actorsIdPair],
+							sharedMoviesCount,
+						});
 					}
 				}
 			}
 		}
 	}
 
-	return topActorPair;
+	return topActorPairs;
 };

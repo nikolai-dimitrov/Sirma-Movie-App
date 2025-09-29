@@ -3,7 +3,7 @@ import { useState, useEffect, createContext } from 'react'
 import { csvFileProcessor } from '../services/csvFileProcessor'
 import { buildActorsRelations, buildMoviesRelations } from '../utils/buildDataRelations';
 import { seedRoleDetails } from '../utils/seedRoleDetails';
-import { getTopActorPair } from '../utils/getTopActorPair';
+
 export const MovieContext = createContext();
 
 export const MovieProvider = ({ children }) => {
@@ -48,7 +48,6 @@ export const MovieProvider = ({ children }) => {
 
         const moviesAndRoles = buildMoviesRelations(data.movies, seededRoles);
         const actorsAndRoles = buildActorsRelations(data.actors, seededRoles)
-
 
         setMoviesMappedWithRoles(moviesAndRoles);
         setActorsMappedWithRoles(actorsAndRoles);
@@ -107,7 +106,7 @@ export const MovieProvider = ({ children }) => {
         };
 
         let isActorExists = data.actors.find((currentActor) => currentActor.FullName == formValues.FullName)
-        
+
         if (isActorExists) {
             setServerError('This actor already exists!');
             return;
