@@ -1,40 +1,25 @@
-export const buildMoviesRelations = (movies, allRoles) => {
-	const allMovies = [];
-	const rolesByMovieId = {};
-
-	allRoles.forEach((currentRole) => {
-		if (!rolesByMovieId[currentRole.MovieID]) {
-			rolesByMovieId[currentRole.MovieID] = [];
+export const buildMoviesRelations = (moviesByIds, rolesByIds) => {
+	for (const key in rolesByIds) {
+		const currentRole = rolesByIds[key];
+		if (!moviesByIds[currentRole.MovieID].roles) {
+			moviesByIds[currentRole.MovieID].roles = [];
 		}
 
-		rolesByMovieId[currentRole.MovieID].push(currentRole);
-	});
+		moviesByIds[currentRole.MovieID].roles.push(currentRole);
+	}
 
-	movies.forEach((currentMovie) => {
-		const movieId = currentMovie.ID;
-		allMovies.push({ ...currentMovie, roles: rolesByMovieId[movieId] });
-	});
-
-	return allMovies;
+	return moviesByIds;
 };
 
-export const buildActorsRelations = (actors, allRoles) => {
-	const allActors = [];
-	const rolesByActorId = {};
-
-	allRoles.forEach((currentRole) => {
-		if (!rolesByActorId[currentRole.ActorID]) {
-			rolesByActorId[currentRole.ActorID] = [];
+export const buildActorsRelations = (actorsByIds, rolesByIds) => {
+	for (const key in rolesByIds) {
+		const currentRole = rolesByIds[key];
+		if (!actorsByIds[currentRole.ActorID].roles) {
+			actorsByIds[currentRole.ActorID].roles = [];
 		}
 
-		rolesByActorId[currentRole.ActorID].push(currentRole);
-	});
+		actorsByIds[currentRole.ActorID].roles.push(currentRole);
+	}
 
-	actors.forEach((currentActor) => {
-		const actorId = currentActor.ID;
-
-		allActors.push({ ...currentActor, roles: rolesByActorId[actorId] });
-	});
-
-	return allActors;
+	return actorsByIds;
 };
