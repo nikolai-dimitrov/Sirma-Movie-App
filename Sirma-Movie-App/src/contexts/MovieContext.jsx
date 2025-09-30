@@ -2,7 +2,6 @@ import { useState, useEffect, createContext } from 'react'
 
 import { csvFileProcessor } from '../services/csvFileProcessor'
 import { buildActorsRelations, buildMoviesRelations } from '../utils/buildDataRelations';
-import { seedRoleDetails } from '../utils/seedRoleDetails';
 
 export const MovieContext = createContext();
 
@@ -16,9 +15,6 @@ export const MovieProvider = ({ children }) => {
         allRolesIds: [],
     })
 
-    const [moviesMappedWithRoles, setMoviesMappedWithRoles] = useState([]);
-    const [actorsMappedWithRoles, setActorsMappedWithRoles] = useState([]);
-
     const [serverError, setServerError] = useState(null);
 
     useEffect(() => {
@@ -30,13 +26,16 @@ export const MovieProvider = ({ children }) => {
                     csvFileProcessor.getRoles(),
                 ]);
 
-                setData((prevState) => ({
-                    moviesByIds,
+                const moviesWithRoles = buildMoviesRelations(moviesByIds, rolesByIds);
+                const actorsWithRoles = buildActorsRelations(actorsByIds, rolesByIds)
+
+                setData(({
+                    moviesByIds: moviesWithRoles,
                     allMoviesIds,
-                    actorsByIds,
+                    actorsByIds: actorsWithRoles,
                     allActorsIds,
                     rolesByIds,
-                    allRolesIds
+                    allRolesIds,
                 }))
 
             } catch (error) {
@@ -46,18 +45,6 @@ export const MovieProvider = ({ children }) => {
         getCsvData();
 
     }, []);
-
-    useEffect(() => {
-        console.log(data, 'data')
-        // const seededRoles = seedRoleDetails(data)
-
-        // const moviesAndRoles = buildMoviesRelations(data.movies, seededRoles);
-        // const actorsAndRoles = buildActorsRelations(data.actors, seededRoles)
-
-        // setMoviesMappedWithRoles(moviesAndRoles);
-        // setActorsMappedWithRoles(actorsAndRoles);
-
-    }, [data])
 
     const clearServerErrors = () => {
         setServerError(null);
@@ -145,8 +132,6 @@ export const MovieProvider = ({ children }) => {
         data,
         serverError,
         clearServerErrors,
-        moviesMappedWithRoles,
-        actorsMappedWithRoles,
         addMovieHandler,
         updateMovieHandler,
         deleteMovieHandler,
