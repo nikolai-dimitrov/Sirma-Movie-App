@@ -1,24 +1,24 @@
 export const buildMoviesRelations = (moviesByIds, rolesByIds) => {
-	for (const key in rolesByIds) {
-		const currentRole = rolesByIds[key];
+	for (const id in rolesByIds) {
+		const currentRole = rolesByIds[id];
 		if (!moviesByIds[currentRole.MovieID].roles) {
 			moviesByIds[currentRole.MovieID].roles = [];
 		}
 
-		moviesByIds[currentRole.MovieID].roles.push(currentRole);
+		moviesByIds[currentRole.MovieID].roles.push(id);
 	}
 
 	return moviesByIds;
 };
 
 export const buildActorsRelations = (actorsByIds, rolesByIds) => {
-	for (const key in rolesByIds) {
-		const currentRole = rolesByIds[key];
+	for (const id in rolesByIds) {
+		const currentRole = rolesByIds[id];
 		if (!actorsByIds[currentRole.ActorID].roles) {
 			actorsByIds[currentRole.ActorID].roles = [];
 		}
 
-		actorsByIds[currentRole.ActorID].roles.push(currentRole);
+		actorsByIds[currentRole.ActorID].roles.push(id);
 	}
 
 	return actorsByIds;
