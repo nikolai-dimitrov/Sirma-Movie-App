@@ -1,12 +1,12 @@
-import { useState, useEffect, createContext } from 'react'
-
+import { useState, useEffect, createContext, useReducer } from 'react'
 import { csvFileProcessor } from '../services/csvFileProcessor'
 import { buildActorsRelations, buildMoviesRelations } from '../utils/buildDataRelations';
+import { dataReducer } from '../reducers/dataReducer';
 
 export const MovieContext = createContext();
 
 export const MovieProvider = ({ children }) => {
-    const [data, setData] = useState({
+    const [data, dispatch] = useReducer(dataReducer, {
         moviesByIds: {},
         allMoviesIds: [],
         actorsByIds: {},
@@ -29,14 +29,17 @@ export const MovieProvider = ({ children }) => {
                 const moviesWithRoles = buildMoviesRelations(moviesByIds, rolesByIds);
                 const actorsWithRoles = buildActorsRelations(actorsByIds, rolesByIds)
 
-                setData(({
-                    moviesByIds: moviesWithRoles,
-                    allMoviesIds,
-                    actorsByIds: actorsWithRoles,
-                    allActorsIds,
-                    rolesByIds,
-                    allRolesIds,
-                }))
+                dispatch({
+                    type: 'set_initial_data',
+                    payload: {
+                        moviesByIds: moviesWithRoles,
+                        allMoviesIds,
+                        actorsByIds: actorsWithRoles,
+                        allActorsIds,
+                        rolesByIds,
+                        allRolesIds,
+                    }
+                })
 
             } catch (error) {
                 console.log(error)
@@ -51,41 +54,39 @@ export const MovieProvider = ({ children }) => {
     }
 
     const addMovieHandler = (formValues) => {
-        const highestId = Math.max(...data.movies.map((currentMovie) => currentMovie.ID))
+        const highestId = Math.max(...data.allMoviesIds)
+
         const movie = {
             'ID': highestId + 1,
             ...formValues,
             roles: [],
         };
 
-        let isMovieExists = data.movies.find((currentMovie) => currentMovie.Title == formValues.Title);
+        let isMovieExists = data.allMoviesIds.find((currentMovieId) => data.moviesByIds[currentMovieId].Title == formValues.Title);
         if (isMovieExists) {
             setServerError('This movie title already exists!');
             return
         }
 
-        setData((prevState) => ({
-            ...prevState,
-            movies: [...prevState.movies, movie]
-        }))
-
+        dispatch({ type: 'create_movie', payload: movie })
         clearServerErrors();
 
     };
 
-    const updateMovieHandler = (updatedMovie, movieId) => {
-        setData((prevState) => ({
-            ...prevState,
-            movies: prevState.movies.map((currentMovie) => currentMovie.ID == movieId ? { ...currentMovie, ...updatedMovie } : currentMovie)
-        }))
+    const updateMovieHandler = (newData, movieId) => {
+        // TODO: prevent updating movie title with existing title.
+        // let isMovieExists = data.allMoviesIds.find((currentMovieId) => data.moviesByIds[currentMovieId].Title == newData?.Title);
+        // if (isMovieExists) {
+        //     setServerError('This movie title already exists!');
+        //     return
+        // }
+
+        dispatch({ type: 'update_movie', payload: { id: movieId, newData } });
+
     }
 
     const deleteMovieHandler = (movieId) => {
-        setData((prevState) => ({
-            ...prevState,
-            movies: prevState.movies.filter((currentMovie) => currentMovie.ID != movieId),
-            roles: prevState.roles.filter((currentRole) => currentRole.MovieID != movieId),
-        }))
+        dispatch({ type: 'delete_movie', payload: { id: movieId } })
     }
 
     const addActorHandler = (formValues) => {
