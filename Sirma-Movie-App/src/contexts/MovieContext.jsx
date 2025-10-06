@@ -74,14 +74,19 @@ export const MovieProvider = ({ children }) => {
     };
 
     const updateMovieHandler = (newData, movieId) => {
-        // TODO: prevent updating movie title with existing title.
-        // let isMovieExists = data.allMoviesIds.find((currentMovieId) => data.moviesByIds[currentMovieId].Title == newData?.Title);
-        // if (isMovieExists) {
-        //     setServerError('This movie title already exists!');
-        //     return
-        // }
+        let isMovieExists = data.allMoviesIds.find((currentMovieId) => {
+            if (movieId !== currentMovieId) {
+                return data.moviesByIds[currentMovieId].Title == newData?.Title
+            }
+        });
+
+        if (isMovieExists) {
+            setServerError('This movie title already exists!');
+            return
+        }
 
         dispatch({ type: 'update_movie', payload: { id: movieId, newData } });
+        clearServerErrors();
 
     }
 
