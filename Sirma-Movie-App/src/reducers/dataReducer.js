@@ -1,9 +1,10 @@
+import { deleteMovieRoles } from "../utils/reducerUtils";
 export const dataReducer = (state, action) => {
 	switch (action.type) {
 		case "set_initial_data": {
 			return { ...state, ...action.payload };
 		}
-		
+
 		case "create_movie": {
 			return {
 				...state,
@@ -29,12 +30,29 @@ export const dataReducer = (state, action) => {
 		}
 
 		case "delete_movie": {
-			delete state.moviesByIds[action.payload.id]
+			const movie = state.moviesByIds[action.payload.id];
+
+			const [updatedActors, updatedRoles, roleIds] = deleteMovieRoles(
+				state,
+				movie
+			);
+			delete state.moviesByIds[action.payload.id];
+
 			return {
 				...state,
+
 				allMoviesIds: state.allMoviesIds.filter(
 					(movieId) => movieId != action.payload.id
 				),
+
+				allRolesIds: state.allRolesIds.filter((roleId) => {
+					if (!roleIds.includes(roleId)) {
+						return roleId;
+					}
+				}),
+
+				actorsByIds: { ...state.actorsByIds, ...updatedActors },
+				rolesByIds: { ...state.roleIds, ...updatedRoles },
 			};
 		}
 
