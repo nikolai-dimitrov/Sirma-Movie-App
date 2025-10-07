@@ -5,16 +5,13 @@ import { getTopActorPair } from '../../utils/getTopActorPair';
 
 import styles from './home.module.css'
 export const Home = () => {
-    const { data, moviesMappedWithRoles } = useContext(MovieContext);
+    const { data } = useContext(MovieContext);
     const [topActorPairs, setTopActorPairs] = useState([]);
 
     useEffect(() => {
-        const actorPairs = getTopActorPair(moviesMappedWithRoles);
+        const actorPairs = getTopActorPair(data.moviesByIds, data.rolesByIds);
         setTopActorPairs(actorPairs);
-    }, [moviesMappedWithRoles]);
-
-    // TODO: pass actorsById from context to avoid map all entities on every component mount/unmount
-    const actorsById = Object.fromEntries(data.actors.map((currentActor) => [currentActor.ID, currentActor]));
+    }, [data]);
 
     return (
         <section className={styles.home}>
@@ -24,8 +21,8 @@ export const Home = () => {
                     <div className={styles.actorsInformationContainer}>
                         <h4>Actors' names: </h4>
                         <div>
-                            <p>{actorsById[currentActorPair.actorPairId.split("-")[0]].FullName}</p>
-                            <p>{actorsById[currentActorPair.actorPairId.split("-")[1]].FullName}</p>
+                            <p>{data.actorsByIds[currentActorPair.actorPairId.split("-")[0]].FullName}</p>
+                            <p>{data.actorsByIds[currentActorPair.actorPairId.split("-")[1]].FullName}</p>
                         </div>
                     </div>
                     <h4>Shared Movies List:</h4>

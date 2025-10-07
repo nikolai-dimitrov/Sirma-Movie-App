@@ -11,7 +11,7 @@ import { MdDelete } from 'react-icons/md'
 import styles from './actors.module.css'
 
 export const Actors = () => {
-    const { actorsMappedWithRoles, addActorHandler, updateActorHandler, deleteActorHandler, serverError, clearServerErrors } = useContext(MovieContext);
+    const { data, addActorHandler, updateActorHandler, deleteActorHandler, serverError, clearServerErrors } = useContext(MovieContext);
 
     const [searchParam, setSearchParam] = useState('');
     const debouncedSearchParam = useDebouncedSearch(searchParam);
@@ -26,9 +26,10 @@ export const Actors = () => {
         clearServerErrors();
     }, []);
 
-    const filteredActors = useMemo(() => actorsMappedWithRoles.filter((currentActor) => {
-        return currentActor.FullName.toLowerCase().includes(debouncedSearchParam.toLowerCase());
-    }), [actorsMappedWithRoles, debouncedSearchParam]);
+    // TODO: Check dependency array 
+    const filteredActorsIds = useMemo(() => data.allActorsIds.filter((currentActorId) => {
+        return data.actorsByIds[currentActorId].FullName.toLowerCase().includes(debouncedSearchParam.toLowerCase());
+    }), [data.allActorsIds, data.actorsByIds, debouncedSearchParam]);
 
     const finishUpdate = () => {
         setActor({});
@@ -79,29 +80,37 @@ export const Actors = () => {
                 />
             </div>
             <ul className={styles.actorsList}>
-                {filteredActors?.map(currentActor => (
-                    <li key={currentActor.ID} className={styles.actorItem}>
-                        <div className={styles.actorSummary}>
-                            <div className={styles.titleContainer}>
-                                <p onClick={() => toggleActorDetails(currentActor)} className={styles.title}>{currentActor.FullName}</p>
+                {filteredActorsIds?.map(currentActorId => {
+                    const currentActor = data.actorsByIds[currentActorId]
+                    return (
+                        <li key={currentActor.ID} className={styles.actorItem}>
+                            <div className={styles.actorSummary}>
+                                <div className={styles.titleContainer}>
+                                    <p onClick={() => toggleActorDetails(currentActor)} className={styles.title}>{currentActor.FullName}</p>
+                                </div>
+                                <div className={styles.buttonsContainer}>
+                                    <button className={styles.updateBtn} onClick={() => updateClickHandler(currentActor)}><FaEdit /></button>
+                                    <button className={styles.deleteBtn} onClick={() => deleteClickHandler(currentActor.ID)}><MdDelete /></button>
+                                </div>
                             </div>
-                            <div className={styles.buttonsContainer}>
-                                <button className={styles.updateBtn} onClick={() => updateClickHandler(currentActor)}><FaEdit /></button>
-                                <button className={styles.deleteBtn} onClick={() => deleteClickHandler(currentActor.ID)}><MdDelete /></button>
-                            </div>
-                        </div>
 
-                        <div className={styles.detailsContainer}>
-                            <div className={toggledMovieDetailsId == currentActor.ID ? `` : `${styles.hidden}`}>
-                                <p >Birth Date: {currentActor.BirthDate}</p>
-                                {currentActor.roles?.length > 0 && <h4>Movies and Roles:</h4>}
-                                {currentActor.roles?.map((currentRole, index) => (
-                                    <p className={styles.movieDetails} key={index}>{currentRole.MovieDetails.Title} - {currentRole.RoleName == 'NULL' ? 'Unnamed' : currentRole.RoleName}</p>
-                                ))}
+                            <div className={styles.detailsContainer}>
+                                <div className={toggledMovieDetailsId == currentActor.ID ? `` : `${styles.hidden}`}>
+                                    <p >Birth Date: {currentActor.BirthDate}</p>
+                                    {currentActor.roles?.length > 0 && <h4>Movies and Roles:</h4>}
+                                    {currentActor.roles?.map((currentRoleId, index) => {
+                                        const currentRole = data.rolesByIds[currentRoleId];
+                                        const currentMovieId = currentRole.MovieID;
+                                        const currentMovie = data.moviesByIds[currentMovieId]
+                                        return (
+                                            <p className={styles.movieDetails} key={index}>{currentMovie.Title} - {currentRole.RoleName == 'NULL' ? 'Unnamed' : currentRole.RoleName}</p>
+                                        )
+                                    })}
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                ))}
+                        </li>
+                    )
+                })}
             </ul>
         </section>
     )
