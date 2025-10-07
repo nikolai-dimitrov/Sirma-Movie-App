@@ -64,7 +64,7 @@ export const Actors = () => {
     const onChangeHandler = (e) => {
         setSearchParam(e.target.value);
     }
-    console.log(data,'data')
+
     return (
         <section className={styles.actors}>
             <ActorForm actor={actor} submitHandler={isUpdating ? updateActorHandler : addActorHandler} finishUpdate={finishUpdate} isUpdating={isUpdating} />
