@@ -26,7 +26,6 @@ export const Actors = () => {
         clearServerErrors();
     }, []);
 
-    // TODO: Check dependency array 
     const filteredActorsIds = useMemo(() => data.allActorsIds.filter((currentActorId) => {
         return data.actorsByIds[currentActorId].FullName.toLowerCase().includes(debouncedSearchParam.toLowerCase());
     }), [data.allActorsIds, data.actorsByIds, debouncedSearchParam]);
