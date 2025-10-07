@@ -75,7 +75,7 @@ export const MovieProvider = ({ children }) => {
 
     const updateMovieHandler = (newData, movieId) => {
         let isMovieExists = data.allMoviesIds.find((currentMovieId) => {
-            if (movieId !== currentMovieId) {
+            if (movieId != currentMovieId) {
                 return data.moviesByIds[currentMovieId].Title == newData?.Title
             }
         });
@@ -95,7 +95,7 @@ export const MovieProvider = ({ children }) => {
     }
 
     const addActorHandler = (formValues) => {
-        const highestId = Math.max(...data.actors.map((currentActor) => currentActor.ID))
+        const highestId = Math.max(...data.allActorsIds)
 
         const actor = {
             'ID': highestId + 1,
@@ -103,27 +103,35 @@ export const MovieProvider = ({ children }) => {
             roles: [],
         };
 
-        let isActorExists = data.actors.find((currentActor) => currentActor.FullName == formValues.FullName)
+        let isActorExists = data.allActorsIds.find((currentActorId) => data.actorsByIds[currentActorId].FullName == formValues.FullName)
 
         if (isActorExists) {
             setServerError('This actor already exists!');
             return;
         }
 
-        setData((prevState) => ({
-            ...prevState,
-            actors: [...prevState.actors, actor]
-        }))
+        dispatch({ type: 'create_actor', payload: actor })
 
         clearServerErrors();
 
     };
 
-    const updateActorHandler = (updatedActor, actorId) => {
-        setData((prevState) => ({
-            ...prevState,
-            actors: prevState.actors.map((currentActor) => currentActor.ID == actorId ? { ...currentActor, ...updatedActor } : currentActor)
-        }))
+    const updateActorHandler = (newData, actorId) => {
+        // TODO: Add condition for same birthday
+        let isActorExists = data.allActorsIds.find((currentActorId) => {
+            if (actorId != currentActorId) {
+                return data.actorsByIds[currentActorId].FullName == newData?.FullName
+            }
+        });
+
+        if (isActorExists) {
+            setServerError('This actor already exists!');
+            return
+        }
+
+        dispatch({ type: 'update_actor', payload: { id: actorId, newData } })
+
+        clearServerErrors();
     }
 
     const deleteActorHandler = (actorId) => {

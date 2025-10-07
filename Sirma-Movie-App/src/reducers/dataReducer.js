@@ -57,8 +57,27 @@ export const dataReducer = (state, action) => {
 		}
 
 		case "create_actor": {
+			return {
+				...state,
+				allActorsIds: [...state.allActorsIds, action.payload.ID],
+				actorsByIds: {
+					...state.actorsByIds,
+					[action.payload.ID]: action.payload,
+				},
+			};
 		}
+
 		case "update_actor": {
+			return {
+				...state,
+				actorsByIds: {
+					...state.actorsByIds,
+					[action.payload.id]: {
+						...state.actorsByIds[action.payload.id],
+						...action.payload.newData,
+					},
+				},
+			};
 		}
 		case "delete_actor": {
 		}
