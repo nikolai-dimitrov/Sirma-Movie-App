@@ -31,3 +31,37 @@ export const deleteMovieRoles = (state, movie) => {
 
 	return [updatedActors, rolesCopy, roleIds];
 };
+
+export const deleteActorRoles = (state, actor) => {
+	const roleIds = actor?.roles || [];
+	const movieIds = [];
+	const updatedMovies = {};
+	const rolesCopy = { ...state.rolesByIds };
+
+	if (roleIds.length > 0) {
+		roleIds.forEach((roleId) => {
+			const movieId = rolesCopy[roleId].MovieID;
+			movieIds.push(movieId);
+
+			delete rolesCopy[roleId];
+		});
+
+		movieIds.forEach((movieId) => {
+			const movie = state.moviesByIds[movieId];
+			const existingRoles = movie.roles.filter((roleId) => {
+				if (!roleIds.includes(roleId)) {
+					return roleId;
+				}
+			});
+
+			const updatedMovie = {
+				...movie,
+				roles: existingRoles,
+			};
+
+			updatedMovies[movieId] = updatedMovie;
+		});
+	}
+
+	return [updatedMovies, rolesCopy, roleIds];
+};

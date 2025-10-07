@@ -135,11 +135,8 @@ export const MovieProvider = ({ children }) => {
     }
 
     const deleteActorHandler = (actorId) => {
-        setData((prevState) => ({
-            ...prevState,
-            actors: prevState.actors.filter((currentActor) => currentActor.ID != actorId),
-            roles: prevState.roles.filter((currentRole) => currentRole.ActorID != actorId),
-        }))
+        dispatch({ type: 'delete_actor', payload: { id: actorId } })
+
     }
 
     const values = {
