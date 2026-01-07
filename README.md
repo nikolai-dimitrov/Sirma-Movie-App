@@ -6,6 +6,16 @@
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 
 ## **Summary**
+This project was developed as part of an educational assignment.
+
+Its primary objective is to demonstrate:
+- Efficient frontend data processing
+- Efficient handling of CSV data loaded in a single request
+- Parsing and managing CSV data
+- Building logical relations between datasets
+- Performing CRUD operations without relying on a backend
+
+The project intentionally minimizes styling complexity in order to focus on **data structures, logic, and performance optimization**.
 
 ### **_Main Task_**
 
